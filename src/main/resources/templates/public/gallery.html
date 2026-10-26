@@ -3,6 +3,7 @@
 <head th:replace="~{fragments/layout :: head('Galería')}"></head>
 <body>
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div th:replace="~{fragments/demo :: banner}"></div>
 <main class="py-5 bg-light">
     <div class="container">
         <div class="text-center mb-5"><span class="section-kicker">Galería</span><h1 class="fw-bold">Detalles que cuentan historias</h1><p class="text-secondary mx-auto section-subtitle">Flores, personajes y regalos con un toque personal. Encuentra inspiración para tu próxima ocasión especial.</p></div>
@@ -13,7 +14,7 @@
         <div class="row g-4">
             <div class="col-12 col-md-6 col-lg-4" th:each="product : ${products}">
                 <article class="card product-card gallery-card h-100">
-                    <a class="product-photo" th:href="@{/productos/{id}(id=${product.id})}"><img th:src="@{${product.imagePath}}" class="card-img-top" th:alt="${product.name}" loading="lazy" width="750" height="1000" alt="Producto"></a>
+                    <a class="product-photo" th:href="@{/productos/{id}(id=${product.id})}"><img th:src="@{${product.imagePath}}" th:style="${product.focusX != 50 || product.focusY != 50} ? 'object-position: ' + ${product.focusX} + '% ' + ${product.focusY} + '%' : null" class="card-img-top" th:alt="${product.name}" loading="lazy" width="750" height="1000" alt="Producto"></a>
                     <div class="card-body"><span class="section-kicker" th:text="${product.category.name}">Categoría</span><h2 class="h5" th:text="${product.name}">Producto</h2><a class="btn btn-outline-primary btn-sm mt-2" th:href="@{/productos/{id}(id=${product.id})}">Descubrir detalle <i class="bi bi-arrow-up-right ms-1"></i></a></div>
                 </article>
             </div>

@@ -6,6 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import jakarta.persistence.LockModeType;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
@@ -29,4 +33,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsByCatalogKey(String catalogKey);
 
     Optional<Product> findByCatalogKey(String catalogKey);
+
+    long countByPublicationStatus(com.deluxeterno.domain.PublicationStatus status);
+
+    @Query("select count(p) from Product p where p.supplyMode = :mode and (p.stockQuantity - p.reservedQuantity) <= p.lowStockThreshold")
+    long countLowStock(@Param("mode") com.deluxeterno.domain.SupplyMode mode);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select p from Product p where p.id = :id")
+    Optional<Product> findForUpdate(@Param("id") Long id);
 }

@@ -3,6 +3,7 @@
 <head th:replace="~{fragments/layout :: head('Contacto')}"></head>
 <body>
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div th:replace="~{fragments/demo :: banner}"></div>
 <main class="py-5">
     <div class="container">
         <div class="row g-5">
@@ -22,6 +23,7 @@
             <div class="col-lg-7">
                 <div class="alert alert-success" role="status" th:if="${successMessage}" th:text="${successMessage}">Consulta registrada.</div>
                 <form class="card border-0 shadow-sm p-4 p-md-5" th:action="@{/contactos}" th:object="${inquiryForm}" method="post">
+<div th:replace="~{fragments/demo :: tools('contact')}"></div>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="name" class="form-label">Nombre <span class="text-secondary">(obligatorio)</span></label>

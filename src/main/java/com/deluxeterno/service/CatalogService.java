@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
+import java.util.UUID;
+import com.deluxeterno.domain.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -48,6 +50,10 @@ public class CatalogService {
         return productRepository.findTop3ByActiveTrueOrderByNameAsc();
     }
 
+    public long countDrafts() { return productRepository.countByPublicationStatus(PublicationStatus.DRAFT); }
+
+    public long countLowStock() { return productRepository.countLowStock(SupplyMode.STOCK); }
+
     public long countProducts() { return productRepository.count(); }
 
     public long countCategories() { return categoryRepository.count(); }
@@ -55,34 +61,74 @@ public class CatalogService {
     public boolean categoryExists(Long id) { return categoryRepository.existsById(id); }
 
     public Product findProduct(Long id) {
-        return productRepository.findByIdAndActiveTrue(id)
+        Product product = productRepository.findByIdAndActiveTrue(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
+        product.getAdditionalImagePaths().size();
+        return product;
     }
 
     public Product findAnyProduct(Long id) {
-        return productRepository.findById(id)
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
+        product.getAdditionalImagePaths().size();
+        return product;
     }
 
     @Transactional
     public Product createProduct(ProductForm form) {
+        return createProduct(form, "sistema");
+    }
+
+    @Transactional
+    public Product createProduct(ProductForm form, String actor) {
         Product product = new Product(
                 form.getName(),
                 form.getDescription(),
                 form.getImagePath(),
                 findCategory(form.getCategoryId()));
+        product.setSku("DE-" + UUID.randomUUID().toString().replace("-", "").substring(0,12).toUpperCase());
+        applyForm(product,form,actor);
         return productRepository.save(product);
     }
 
     @Transactional
     public Product updateProduct(Long id, ProductForm form) {
-        Product product = productRepository.findById(id)
+        return updateProduct(id,form,"sistema");
+    }
+
+    @Transactional
+    public Product updateProduct(Long id, ProductForm form, String actor) {
+        Product product = productRepository.findForUpdate(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
+        if (form.getVersion()!=null && form.getVersion()!=product.getVersion())
+            throw new ProductEditException("Otra persona modificó este producto. Recarga la página antes de guardar.");
+        if (product.getSupplyMode()==SupplyMode.STOCK && form.getSupplyMode()==SupplyMode.MADE_TO_ORDER
+                && (product.getStockQuantity()>0 || product.getReservedQuantity()>0))
+            throw new ProductEditException("Antes de cambiar a por encargo, libera las reservas y ajusta la existencia física a cero.");
         product.setName(form.getName());
         product.setDescription(form.getDescription());
         product.setImagePath(form.getImagePath());
         product.setCategory(findCategory(form.getCategoryId()));
+        applyForm(product,form,actor);
         return productRepository.save(product);
+    }
+
+    private void applyForm(Product product, ProductForm form, String actor) {
+        product.setName(form.getName().trim());
+        product.setDescription(form.getDescription()==null ? "" : form.getDescription().trim());
+        product.setImagePath(form.getImagePath()==null ? "" : form.getImagePath().trim());
+        product.setSupplyMode(form.getSupplyMode()); product.setPublicationStatus(form.getPublicationStatus());
+        product.setPriceMode(form.getPriceMode()); product.setPrice(form.getPriceMode()==PriceMode.CONSULT ? null : form.getPrice());
+        product.setIncludedItems(form.getIncludedItems()); product.setPersonalization(form.getPersonalization());
+        product.setOccasions(form.getOccasions()); product.setPreparationTime(form.getPreparationTime());
+        product.setInternalNotes(form.getInternalNotes()); product.setTemporarilyUnavailable(form.isTemporarilyUnavailable());
+        product.setLowStockThreshold(form.getLowStockThreshold()); product.setUpdatedBy(actor);
+        product.setFocusX(form.getFocusX()); product.setFocusY(form.getFocusY());
+        if (form.isGallerySubmitted()) {
+            product.setSecondaryImagePath(null);
+            product.getAdditionalImagePaths().clear();
+            form.getAdditionalImagePaths().stream().filter(s -> !s.equals(form.getImagePath())).distinct().forEach(product.getAdditionalImagePaths()::add);
+        }
     }
 
     @Transactional
@@ -94,7 +140,10 @@ public class CatalogService {
 
     @Transactional
     public void activateProduct(Long id) {
-        findAnyProduct(id).setActive(true);
+        Product product=findAnyProduct(id);
+        if (product.getDescription().isBlank() || product.getImagePath().isBlank())
+            throw new ProductEditException("Completa la descripción y la fotografía principal antes de publicar.");
+        product.setActive(true);
     }
 
     @Transactional

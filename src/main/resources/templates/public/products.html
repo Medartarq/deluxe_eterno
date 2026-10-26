@@ -3,6 +3,7 @@
 <head th:replace="~{fragments/layout :: head('Productos')}"></head>
 <body>
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div th:replace="~{fragments/demo :: banner}"></div>
 <main class="py-5 bg-soft">
     <div class="container">
         <div class="d-flex flex-column gap-3 mb-4">
@@ -15,11 +16,11 @@
         <div class="row g-4" th:if="${!products.isEmpty()}">
             <div class="col-12 col-md-6 col-lg-4" th:each="product : ${products}">
                 <article class="card product-card h-100 border-0 shadow-sm">
-                    <div class="product-photo"><img th:src="@{${product.imagePath}}" class="card-img-top" loading="lazy" width="750" height="1000" th:alt="${product.name}" alt="Producto"></div>
+                    <div class="product-photo"><img th:src="@{${product.imagePath}}" th:style="${product.focusX != 50 || product.focusY != 50} ? 'object-position: ' + ${product.focusX} + '% ' + ${product.focusY} + '%' : null" class="card-img-top" loading="lazy" width="750" height="1000" th:alt="${product.name}" alt="Producto"></div>
                     <div class="card-body">
                         <span class="badge text-bg-light mb-2" th:text="${product.category.name}">Categoría</span>
                         <h2 class="h5" th:text="${product.name}">Producto</h2>
-                        <p class="text-secondary" th:text="${product.description}">Descripción</p>
+                        <p class="text-secondary" th:text="${product.description}">Descripción</p><p class="small mb-2"><strong th:text="${product.priceLabel}"></strong> · <span th:text="${product.availabilityLabel}"></span></p>
                         <div class="d-grid gap-2">
                             <a class="btn btn-primary" th:href="@{/productos/{id}(id=${product.id})}">Consultar opciones</a>
                             <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal"

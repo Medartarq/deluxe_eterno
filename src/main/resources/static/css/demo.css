@@ -1,0 +1,17 @@
+.demo-banner { display: flex; align-items: center; gap: 14px; padding: 14px 20px; background: #fff5df; border: 1px solid #ead49d; border-radius: 12px; color: #6d501a; font-size: .8rem; margin-bottom: 24px; }
+body:not(.admin-body) > .demo-banner { border-radius: 0; margin: 0; justify-content: center; flex-wrap: wrap; }
+.demo-banner strong, .demo-banner span:not(.demo-badge) { display: block; }
+.demo-banner a { margin-left: auto; color: #6d501a; font-weight: 600; white-space: nowrap; }
+.demo-badge { display: inline-block; padding: 4px 7px; background: #f9e4b1; color: #715016; border-radius: 5px; font-size: .62rem; letter-spacing: .07em; font-weight: 750; flex-shrink: 0; }
+.demo-tools { padding: 18px; margin-bottom: 22px; border: 1px dashed #d7b976; border-radius: 12px; background: #fffaf0; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.demo-tools strong { font-size: .85rem; margin-left: 8px; }
+.demo-tools p { font-size: .75rem; color: #806b44; margin: 6px 0 0; }
+.demo-controls { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; margin-left: auto; }
+.demo-controls label { font-size: .7rem; color: #806b44; }
+.demo-controls select { margin-top: 4px; min-width: 170px; }
+.demo-feedback { flex-basis: 100%; }
+.demo-feedback:empty { display: none; }
+.demo-help { max-width: 850px; }
+.demo-help p { color: #75656e; font-size: .9rem; margin-top: 18px; }
+.demo-help strong { color: #292326; }
+@media(max-width:575px) { .demo-banner { flex-wrap: wrap; padding: 14px; }.demo-banner a { margin-left: 0; }.demo-controls { margin-left: 0; width: 100%; }.demo-tools { padding: 14px; } }

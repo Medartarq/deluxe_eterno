@@ -3,15 +3,21 @@
 <head th:replace="~{fragments/layout :: head('Detalle del producto')}"></head>
 <body>
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div th:replace="~{fragments/demo :: banner}"></div>
 <main class="py-5">
     <div class="container">
         <a class="btn btn-link px-0 mb-3" th:href="@{/productos}"><i class="bi bi-arrow-left me-1"></i>Volver al catálogo</a>
         <div class="row g-5 align-items-center">
-            <div class="col-lg-6"><img th:src="@{${product.imagePath}}" class="product-detail-image rounded-4" th:alt="${product.name}" alt="Producto"><figure class="mt-4" th:if="${product.secondaryImagePath != null}"><img th:src="@{${product.secondaryImagePath}}" class="product-detail-image rounded-4" th:alt="${product.name + ' — otra vista'}" loading="lazy" alt="Otra vista"><figcaption class="small text-secondary mt-2">Otra vista del mismo detalle</figcaption></figure></div>
+            <div class="col-lg-6"><figure th:each="image, position : ${product.galleryImages}" class="mb-4"><img th:src="@{${image}}" class="product-detail-image rounded-4" th:alt="${product.name + ' — fotografía ' + (position.index + 1)}" loading="lazy"></figure></div>
             <div class="col-lg-6">
                 <span class="badge text-bg-light mb-3" th:text="${product.category.name}">Categoría</span>
                 <h1 class="fw-bold" th:text="${product.name}">Producto</h1>
                 <p class="lead text-secondary" th:text="${product.description}">Descripción</p>
+                <p><strong th:text="${product.priceLabel}"></strong> · <span th:text="${product.availabilityLabel}"></span></p>
+                <div th:if="${!#strings.isEmpty(product.includedItems)}"><h2 class="h5">¿Qué incluye?</h2><p class="product-meta" th:text="${product.includedItems}"></p></div>
+                <div th:if="${!#strings.isEmpty(product.personalization)}"><h2 class="h5">Personalización</h2><p class="product-meta" th:text="${product.personalization}"></p></div>
+                <p th:if="${!#strings.isEmpty(product.preparationTime)}"><strong>Preparación: </strong><span th:text="${product.preparationTime}"></span></p>
+                <p th:if="${!#strings.isEmpty(product.occasions)}"><strong>Ideal para: </strong><span th:text="${product.occasions}"></span></p>
                 <div class="alert alert-light border"><i class="bi bi-chat-heart me-2"></i>Consulta con nosotros para conocer las opciones de personalización y disponibilidad. Las fotografías muestran composiciones de referencia.</div>
                 <a class="btn btn-primary btn-lg" th:href="@{/contacto}">Consultar opciones</a>
             </div>

@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"><body>
+<div th:fragment="banner" th:if="${demoEnabled}" class="demo-banner" role="status"><span class="demo-badge">DEMO</span><div><strong>Modo demo activo</strong><span>Completa los campos con un ejemplo y revísalo antes de guardar.</span></div><a th:href="@{/admin/demo}">Configurar modo demo</a></div>
+<div th:fragment="tools(kind)" th:if="${demoEnabled}" class="demo-tools" th:data-demo-kind="${kind}" th:data-physical="${kind == 'stock' ? product.stockQuantity : null}" th:data-reserved="${kind == 'stock' ? product.reservedQuantity : null}">
+    <div><span class="demo-badge">DEMO</span><strong>Completar con un ejemplo</strong><p>Datos de ejemplo que puedes ajustar antes de guardar.</p></div>
+    <div class="demo-controls">
+        <label th:if="${kind == 'product'}">Ejemplo de producto<select class="form-select form-select-sm" data-demo-scenario><option value="order">Regalo por encargo</option><option value="stock">Regalo con stock</option></select></label>
+        <label th:if="${kind == 'stock'}">Movimiento de ejemplo<select class="form-select form-select-sm" data-demo-scenario><option value="IN">Entrada</option><option value="RESERVE">Reserva</option><option value="RELEASE">Liberación</option><option value="OUT">Salida</option><option value="CORRECTION">Corrección</option></select></label>
+        <button type="button" class="btn btn-outline-primary btn-sm" data-demo-fill>Completar campos</button>
+    </div><p class="demo-feedback" role="status" aria-live="polite"></p>
+</div>
+</body></html>

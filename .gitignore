@@ -15,3 +15,7 @@ docs/auditoria/*
 .DS_Store
 __pycache__/
 .tools/
+uploads/
+!docs/modulo-productos/
+docs/modulo-productos/*
+!docs/modulo-productos/*.md

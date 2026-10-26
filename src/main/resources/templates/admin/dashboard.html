@@ -5,13 +5,14 @@
 <nav th:replace="~{fragments/admin-layout :: adminNavbar}"></nav>
 <main class="container py-4">
     <div th:replace="~{fragments/admin-layout :: adminFlash}"></div>
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4"><div><span class="section-kicker">Panel</span><h1 class="fw-bold mb-0">Resumen</h1></div><a class="btn btn-primary" th:href="@{/admin/products/new}"><i class="bi bi-plus-lg me-1"></i>Nuevo producto</a></div>
-    <div class="row g-4">
-        <div class="col-12 col-md-6 col-xl-3"><div class="admin-stat-card"><span>Consultas nuevas</span><strong th:text="${newInquiryCount}">0</strong><a th:href="@{/admin/inquiries}">Ver consultas</a></div></div>
-        <div class="col-12 col-md-6 col-xl-3"><div class="admin-stat-card"><span>Total de consultas</span><strong th:text="${totalInquiryCount}">0</strong><a th:href="@{/admin/inquiries}">Ver historial</a></div></div>
-        <div class="col-12 col-md-6 col-xl-3"><div class="admin-stat-card"><span>Productos</span><strong th:text="${productCount}">0</strong><a th:href="@{/admin/products}">Administrar</a></div></div>
-        <div class="col-12 col-md-6 col-xl-3"><div class="admin-stat-card"><span>Categorías</span><strong th:text="${categoryCount}">0</strong><a th:href="@{/admin/categories}">Administrar</a></div></div>
-    </div>
+    <div class="admin-page-heading"><div><span class="section-kicker">TU NEGOCIO, EN UN SOLO LUGAR</span><h1>Resumen</h1><p>Un espacio para cuidar cada detalle de Deluxe Eterno.</p></div><a class="btn btn-primary" th:href="@{/admin/products/new}"><i class="bi bi-plus-lg" aria-hidden="true"></i> Nuevo producto</a></div>
+    <section class="admin-welcome" aria-label="Bienvenida"><div><span class="section-kicker">DELUXE ETERNO · ADMINISTRACIÓN</span><h2>Detrás de cada regalo,<br>está tu cuidado.</h2><p>Organiza tu catálogo, revisa las consultas y prepara lo que viene.</p><a th:href="@{/admin/products}">Ir a mi catálogo <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div><img th:src="@{/assets/brand/simbolo-coral.png}" alt="" aria-hidden="true"></section>
+    <section class="admin-attention" aria-labelledby="attentionTitle"><div class="admin-section-heading"><h2 id="attentionTitle">Tu día de un vistazo</h2><span>Información actual</span></div><div class="admin-metrics">
+        <a class="admin-metric" th:href="@{/admin/inquiries}"><span class="metric-icon"><i class="bi bi-chat-heart" aria-hidden="true"></i></span><span>Consultas nuevas</span><strong th:text="${newInquiryCount}">0</strong><small>Revisar solicitudes <i class="bi bi-arrow-up-right" aria-hidden="true"></i></small></a>
+        <a class="admin-metric" th:href="@{/admin/inventory(low=true)}"><span class="metric-icon metric-warning"><i class="bi bi-box-seam" aria-hidden="true"></i></span><span>Stock bajo o agotado</span><strong th:text="${lowStockCount}">0</strong><small>Revisar inventario <i class="bi bi-arrow-up-right" aria-hidden="true"></i></small></a>
+        <a class="admin-metric" th:href="@{/admin/products(status='DRAFT')}"><span class="metric-icon"><i class="bi bi-pencil-square" aria-hidden="true"></i></span><span>Productos en borrador</span><strong th:text="${draftCount}">0</strong><small>Continuar edición <i class="bi bi-arrow-up-right" aria-hidden="true"></i></small></a>
+    </div></section>
+    <section class="admin-overview" aria-labelledby="catalogTitle"><div><span class="section-kicker">TU CATÁLOGO</span><h2 id="catalogTitle">Todo listo para crear</h2><p><strong th:text="${productCount}">0</strong> productos · <strong th:text="${categoryCount}">0</strong> categorías · <strong th:text="${totalInquiryCount}">0</strong> consultas recibidas</p></div><div class="admin-quick-actions"><a th:href="@{/admin/categories}"><i class="bi bi-tags" aria-hidden="true"></i> Organizar categorías</a><a th:href="@{/admin/inventory}"><i class="bi bi-boxes" aria-hidden="true"></i> Gestionar existencias</a><a th:href="@{/}"><i class="bi bi-shop" aria-hidden="true"></i> Ver tienda</a></div></section>
 </main>
 <footer th:replace="~{fragments/admin-layout :: adminFooter}"></footer>
 <script th:replace="~{fragments/admin-layout :: adminScripts}"></script>

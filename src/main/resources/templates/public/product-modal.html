@@ -15,7 +15,7 @@
                     <img th:src="@{${product.imagePath}}" class="product-modal-image rounded-4 mb-3" loading="lazy"
                          th:alt="${product.name}" alt="Producto">
                     <span class="badge text-bg-light mb-2" th:text="${product.category.name}">Categoría</span>
-                    <p class="text-secondary mb-0" th:text="${product.description}">Descripción</p>
+                    <p class="text-secondary" th:text="${product.description}">Descripción</p><p class="small mb-0"><strong th:text="${product.priceLabel}"></strong> · <span th:text="${product.availabilityLabel}"></span></p>
                 </div>
                 <div class="modal-footer">
                     <a class="btn btn-outline-secondary" th:href="@{/productos/{id}(id=${product.id})}"

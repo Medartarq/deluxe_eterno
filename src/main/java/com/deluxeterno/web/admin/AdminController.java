@@ -1,9 +1,7 @@
 package com.deluxeterno.web.admin;
 
 import com.deluxeterno.domain.InquiryStatus;
-import com.deluxeterno.domain.Product;
 import com.deluxeterno.dto.CategoryForm;
-import com.deluxeterno.dto.ProductForm;
 import com.deluxeterno.service.CatalogService;
 import com.deluxeterno.service.InquiryService;
 import com.deluxeterno.service.DuplicateCategoryException;
@@ -36,93 +34,11 @@ public class AdminController {
     public String dashboard(Model model) {
         model.addAttribute("newInquiryCount", inquiryService.countNew());
         model.addAttribute("totalInquiryCount", inquiryService.countAll());
+        model.addAttribute("draftCount", catalogService.countDrafts());
+        model.addAttribute("lowStockCount", catalogService.countLowStock());
         model.addAttribute("productCount", catalogService.countProducts());
         model.addAttribute("categoryCount", catalogService.countCategories());
         return "admin/dashboard";
-    }
-
-    @GetMapping("/products")
-    public String products(Model model) {
-        model.addAttribute("products", catalogService.findAllProducts());
-        return "admin/products";
-    }
-
-    @GetMapping("/products/new")
-    public String newProduct(Model model) {
-        model.addAttribute("productForm", new ProductForm());
-        model.addAttribute("categories", catalogService.findAllCategories());
-        return "admin/product-form";
-    }
-
-    @PostMapping("/products")
-    public String createProduct(
-            @Valid @ModelAttribute("productForm") ProductForm productForm,
-            BindingResult bindingResult,
-            Model model,
-            RedirectAttributes redirectAttributes) {
-        validateCategory(productForm, bindingResult);
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("categories", catalogService.findAllCategories());
-            return "admin/product-form";
-        }
-        catalogService.createProduct(productForm);
-        redirectAttributes.addFlashAttribute("successMessage", "Producto creado correctamente.");
-        return "redirect:/admin/products";
-    }
-
-    @GetMapping("/products/{id}/edit")
-    public String editProduct(@PathVariable Long id, Model model) {
-        Product product = catalogService.findAnyProduct(id);
-        ProductForm form = new ProductForm();
-        form.setName(product.getName());
-        form.setDescription(product.getDescription());
-        form.setImagePath(product.getImagePath());
-        form.setCategoryId(product.getCategory().getId());
-        model.addAttribute("productForm", form);
-        model.addAttribute("productId", id);
-        model.addAttribute("categories", catalogService.findAllCategories());
-        model.addAttribute("editing", true);
-        return "admin/product-form";
-    }
-
-    @PostMapping("/products/{id}/edit")
-    public String updateProduct(
-            @PathVariable Long id,
-            @Valid @ModelAttribute("productForm") ProductForm productForm,
-            BindingResult bindingResult,
-            Model model,
-            RedirectAttributes redirectAttributes) {
-        validateCategory(productForm, bindingResult);
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("categories", catalogService.findAllCategories());
-            model.addAttribute("productId", id);
-            model.addAttribute("editing", true);
-            return "admin/product-form";
-        }
-        catalogService.updateProduct(id, productForm);
-        redirectAttributes.addFlashAttribute("successMessage", "Producto actualizado correctamente.");
-        return "redirect:/admin/products";
-    }
-
-    @PostMapping("/products/{id}/delete")
-    public String deactivateProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        catalogService.deactivateProduct(id);
-        redirectAttributes.addFlashAttribute("successMessage", "Producto eliminado del catálogo.");
-        return "redirect:/admin/products";
-    }
-
-    @PostMapping("/products/{id}/activate")
-    public String activateProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        catalogService.activateProduct(id);
-        redirectAttributes.addFlashAttribute("successMessage", "Producto publicado correctamente.");
-        return "redirect:/admin/products";
-    }
-
-    private void validateCategory(ProductForm form, BindingResult errors) {
-        if (!errors.hasFieldErrors("categoryId") && form.getCategoryId() != null
-                && !catalogService.categoryExists(form.getCategoryId())) {
-            errors.rejectValue("categoryId", "category.missing", "La categoría ya no está disponible. Selecciona otra.");
-        }
     }
 
     @GetMapping("/categories")

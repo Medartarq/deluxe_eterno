@@ -3,6 +3,7 @@
 <head th:replace="~{fragments/layout :: head('Inicio')}"></head>
 <body>
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div th:replace="~{fragments/demo :: banner}"></div>
 <main>
     <header class="hero-section d-flex align-items-center">
         <div class="container py-5">
@@ -65,7 +66,7 @@
             <div class="row g-4" th:if="${!products.isEmpty()}">
                 <div class="col-12 col-md-6 col-lg-4" th:each="product : ${products}">
                     <article class="card product-card h-100 border-0 shadow-sm">
-                        <div class="product-photo"><img th:src="@{${product.imagePath}}" class="card-img-top" loading="lazy" width="750" height="1000" th:alt="${product.name}" alt="Producto"></div>
+                        <div class="product-photo"><img th:src="@{${product.imagePath}}" th:style="${product.focusX != 50 || product.focusY != 50} ? 'object-position: ' + ${product.focusX} + '% ' + ${product.focusY} + '%' : null" class="card-img-top" loading="lazy" width="750" height="1000" th:alt="${product.name}" alt="Producto"></div>
                         <div class="card-body">
                             <span class="badge text-bg-light mb-2" th:text="${product.category.name}">Categoría</span>
                             <h3 class="h5" th:text="${product.name}">Producto</h3>

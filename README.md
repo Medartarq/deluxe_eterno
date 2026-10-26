@@ -105,3 +105,11 @@ El inventario editorial original se conserva en `Productos/catalogo-productos.js
 Después de actualizar el código hay que reiniciar la instancia con su configuración habitual de MySQL. Hibernate, con `ddl-auto=update`, agrega las columnas `catalog_key` y `secondary_image_path`. Si se usa `validate`, aplicar previamente la migración equivalente. La importación se ejecuta dentro de una transacción.
 
 Las siguientes etapas del curso pueden agregar servicios, galería, canales de contacto administrables, API REST y JWT, sin modificar el prototipo APF1 preservado en `../deluxe_eterno_avance/`.
+
+## Gestión de productos e inventario
+
+El panel ADMIN incluye editor visual, fotografías, borradores/publicación, precios y stock con movimientos auditables. Consulta [la guía del módulo](docs/modulo-productos/README.md) para uso, actualización de esquema y almacenamiento de imágenes mediante `MEDIA_DIRECTORY`. Las fotos nuevas y los registros MySQL se respaldan y comparten por separado de GitHub.
+
+## Exposición y modo demo
+
+Tras reiniciar, un administrador puede pulsar **Activar demo** en el panel. El modo habilita autollenado de categorías, productos, stock y contacto en su sesión, sin guardar automáticamente ni cambiar permisos. La pantalla `/admin/demo` contiene el recorrido recomendado. Los datos guardados persisten en la base actual. Puede deshabilitarse la función con `DEMO_AVAILABLE=false`. Consulta [el guion y la verificación de integración](docs/modulo-productos/DEMO-E-INTEGRACION.md).
