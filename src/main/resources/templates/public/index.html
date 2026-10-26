@@ -8,12 +8,12 @@
         <div class="container py-5">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
-                    <span class="badge rounded-pill text-bg-light mb-3">Detalles personalizados · Trujillo, Perú</span>
-                    <h1 class="display-4 fw-bold">Un detalle especial para cada momento.</h1>
+                    <span class="section-kicker mb-3">Detalles personalizados · Trujillo, Perú</span>
+                    <h1 class="display-4 fw-bold">Un detalle especial para <em>cada momento.</em></h1>
                     <p class="lead mt-3 mb-4">Descubre flores, arreglos, regalos personalizados y opciones para celebrar tus ocasiones especiales.</p>
                     <div class="d-flex flex-column flex-sm-row gap-3">
-                        <a th:href="@{/productos}" class="btn btn-primary btn-lg px-4"><i class="bi bi-gift me-2"></i>Explorar productos</a>
-                        <a th:href="@{/contacto}" class="btn btn-outline-dark btn-lg px-4"><i class="bi bi-chat-dots me-2"></i>Hacer una consulta</a>
+                        <a th:href="@{/contacto}" class="btn btn-primary btn-lg px-4">Hacer una consulta <i class="bi bi-arrow-up-right ms-2"></i></a>
+                        <a th:href="@{/productos}" class="btn btn-outline-dark btn-lg px-4">Explorar productos</a>
                     </div>
                     <div class="row row-cols-3 g-3 mt-4 small text-center text-sm-start">
                         <div class="col"><strong class="d-block fs-5"><i class="bi bi-flower1"></i></strong>Flores</div>
@@ -22,7 +22,12 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="hero-card shadow-lg"><img th:src="@{/assets/hero.svg}" class="img-fluid w-100" alt="Ilustración de regalos y flores"></div>
+                    <div class="hero-brand-scene">
+                        <span class="hero-orbit" aria-hidden="true"></span>
+                        <div class="hero-brand-card"><img th:src="@{/assets/brand/logo-principal.png}" alt="Deluxe Eterno" width="480" height="240"><span>Flores, regalos y emociones.</span></div>
+                        <div class="hero-note"><i class="bi bi-flower1" aria-hidden="true"></i><span>Hecho para celebrar<br><strong>tus momentos especiales</strong></span></div>
+                        <span class="hero-caption">UN GESTO PEQUEÑO. UNA GRAN EMOCIÓN.</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -36,7 +41,7 @@
                 <p class="text-secondary mx-auto section-subtitle">Encuentra ideas para flores, regalos y celebraciones.</p>
             </div>
             <div class="row g-4">
-                <div class="col-12 col-sm-6 col-lg-3" th:each="category : ${categories}">
+                <div class="col-12 col-md-6 col-lg-4" th:each="category : ${categories}">
                     <a class="text-decoration-none" th:href="@{/productos(categoria=${category.id})}">
                         <article class="card category-card h-100 border-0 shadow-sm">
                             <div class="card-body text-center p-4">
@@ -60,17 +65,24 @@
             <div class="row g-4" th:if="${!products.isEmpty()}">
                 <div class="col-12 col-md-6 col-lg-4" th:each="product : ${products}">
                     <article class="card product-card h-100 border-0 shadow-sm">
-                        <img th:src="@{${product.imagePath}}" class="card-img-top" th:alt="${product.name}" alt="Producto">
+                        <div class="product-photo"><img th:src="@{${product.imagePath}}" class="card-img-top" loading="lazy" width="750" height="1000" th:alt="${product.name}" alt="Producto"></div>
                         <div class="card-body">
                             <span class="badge text-bg-light mb-2" th:text="${product.category.name}">Categoría</span>
                             <h3 class="h5" th:text="${product.name}">Producto</h3>
                             <p class="text-secondary" th:text="${product.description}">Descripción</p>
-                            <a class="btn btn-primary w-100" th:href="@{/productos/{id}(id=${product.id})}">Consultar opciones</a>
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-primary" th:href="@{/productos/{id}(id=${product.id})}">Consultar opciones</a>
+                                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal"
+                                        th:data-bs-target="'#productModal-' + ${product.id}">
+                                    <i class="bi bi-eye me-2"></i>Vista rápida
+                                </button>
+                            </div>
                         </div>
                     </article>
                 </div>
             </div>
-            <div class="alert alert-light border" th:if="${products.isEmpty()}">Consulta con nosotros las opciones disponibles para la ocasión que buscas.</div>
+            <div th:replace="~{public/product-modal :: productModals}"></div>
+            <div class="empty-state" th:if="${products.isEmpty()}"><i class="bi bi-gift" aria-hidden="true"></i><div><h3 class="h5">Tu próximo detalle empieza con una idea</h3><p>Consulta con nosotros las opciones disponibles para la ocasión que buscas.</p></div><a class="btn btn-outline-primary" th:href="@{/contacto}">Cuéntanos tu idea <i class="bi bi-arrow-right ms-2"></i></a></div>
         </div>
     </section>
 

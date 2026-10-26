@@ -6,19 +6,19 @@
 <main class="py-5">
     <div class="container">
         <div class="row align-items-center g-5">
-            <div class="col-lg-6"><img th:src="@{/assets/about.svg}" class="img-fluid rounded-4 shadow-sm" alt="Ilustración de detalles y floristería"></div>
+            <div class="col-lg-6"><div class="about-brand-panel"><img th:src="@{/assets/brand/simbolo-coral.png}" alt="Tulipán de Deluxe Eterno" width="180" height="180"><p>Un detalle puede decir<br><em>mucho más.</em></p><span>DELUXE ETERNO · TRUJILLO</span></div></div>
             <div class="col-lg-6">
                 <span class="section-kicker">Nosotros</span>
-                <h2 class="fw-bold mb-3">Detalles que hacen especial cada momento</h2>
+                <h1 class="fw-bold mb-3">Detalles que hacen especial cada momento</h1>
                 <p>Deluxe Eterno es una tienda virtual de Trujillo, Perú, especializada en detalles personalizados, regalos y floristería.</p>
                 <p class="text-secondary">Ofrecemos opciones para expresar emociones y celebrar momentos especiales.</p>
                 <div class="accordion mt-4" id="aboutAccordion">
                     <div class="accordion-item">
-                        <h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#vision">Visión</button></h3>
+                        <h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#vision" aria-expanded="true" aria-controls="vision">Visión</button></h3>
                         <div id="vision" class="accordion-collapse collapse show" data-bs-parent="#aboutAccordion"><div class="accordion-body">Ser una tienda de detalles y floristería reconocida en Trujillo por la creatividad, variedad y personalización de sus productos, fortaleciendo progresivamente su presencia digital y facilitando que más clientes puedan conocer y solicitar productos para sus ocasiones especiales.</div></div>
                     </div>
                     <div class="accordion-item">
-                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mission">Misión</button></h3>
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mission" aria-expanded="false" aria-controls="mission">Misión</button></h3>
                         <div id="mission" class="accordion-collapse collapse" data-bs-parent="#aboutAccordion"><div class="accordion-body">Crear detalles, arreglos florales y regalos personalizados que permitan a nuestros clientes expresar emociones y celebrar momentos especiales, ofreciendo productos creativos y personalizados con una atención cercana y accesible.</div></div>
                     </div>
                 </div>

@@ -1,0 +1,160 @@
+[
+  {
+    "archivo": ".gitignore",
+    "estado": "modificado",
+    "antes": "d2102dd0577a27078b92d09e5b15c475d17840f7ffd9fb4d5725a10ac5c8fdf2",
+    "despues": "e9e72b9c1a86646d00ab4f3b422a2f0e8c03206645f9f13af573ea8d5c4a457a"
+  },
+  {
+    "archivo": "README.md",
+    "estado": "modificado",
+    "antes": "18530b0a565852f526c2612bc3caff72f3294282a2ec4357d3d7462b7bba699e",
+    "despues": "141c8d0d9c3f0c557da875c988f3bb6e3def25d5d207030a73545a22e10d26ca"
+  },
+  {
+    "archivo": "src/main/java/com/deluxeterno/dto/ProductForm.java",
+    "estado": "modificado",
+    "antes": "532e91d4407767a11be509a2b12b103adc1180ee39e3d4d710905f5ca1485a36",
+    "despues": "9033397783ca50b802e5dde3f3b79875c576d7615b4db7ce693d8188b7a911f3"
+  },
+  {
+    "archivo": "src/main/java/com/deluxeterno/repository/CategoryRepository.java",
+    "estado": "modificado",
+    "antes": "f46d2ca0566646911f6edf088a834db8720af3b22466f449a5275d5ea17b2567",
+    "despues": "fbbf9007b925a239b070f3dbe534ee758d9d6438f5ae35a4738a484c2fbc7613"
+  },
+  {
+    "archivo": "src/main/java/com/deluxeterno/repository/ProductRepository.java",
+    "estado": "modificado",
+    "antes": "c4716b0aa6d9e5d36fcc472e34bb6b969a98077b5013389ad384033975820300",
+    "despues": "18c388b798efa1b65907857bde231c9f49763ee3f4322756b90ca632ace78618"
+  },
+  {
+    "archivo": "src/main/java/com/deluxeterno/service/CatalogService.java",
+    "estado": "modificado",
+    "antes": "5d3e757ce986d3bc5f2a74ab1ad4fc486dbfad77f37b497749fb5e3b283d85ed",
+    "despues": "f641193f1d6f1c37ae5e5724e8ac6055697e5565fe2830d0d9342444b621ded0"
+  },
+  {
+    "archivo": "src/main/java/com/deluxeterno/service/InquiryService.java",
+    "estado": "modificado",
+    "antes": "64ffd35f8016366718bc5c3796d2eb14664ff1bc8264ae8a821f674d39fba1e5",
+    "despues": "0254fba1cc10e3cee098ebd9023528ab430938ae33070377fd97c73bccf60dba"
+  },
+  {
+    "archivo": "src/main/java/com/deluxeterno/web/admin/AdminController.java",
+    "estado": "modificado",
+    "antes": "3967d1187fbb3f5c866a7308cbe9de3105c2d4f97b0af1f04a0ea1025621f992",
+    "despues": "2e1b5e7d2affb3c552092a6e6c25f52a0c55fe38a7e73ad2b2503b02c3a575c4"
+  },
+  {
+    "archivo": "src/main/java/com/deluxeterno/web/PublicController.java",
+    "estado": "modificado",
+    "antes": "3b59db7176849d8efd41fb90cfc1577814f4356e6d686b13772e5ea9f9ae61ef",
+    "despues": "890a6e8883966cf5794e096bdde658414f9beae83de557989e63670e6c21aeae"
+  },
+  {
+    "archivo": "src/main/resources/static/assets/brand/README.md",
+    "estado": "modificado",
+    "antes": "60ee98e001c6f8b66da70ea0f2eb44d0f1d1e2afa1d92a604dbf3e8551c1b70a",
+    "despues": "a50e3a69491eefa2f2df17b4a862651b5a7e500939b4469c23df0ad5d4442b2e"
+  },
+  {
+    "archivo": "src/main/resources/static/js/main.js",
+    "estado": "modificado",
+    "antes": "6301f649f67c0fa0578e65e4529690cc38b4ad9b287a344ef23643bc95ad6b92",
+    "despues": "460ce417249d4a35ee76bc0970e90c6d2f9f6614c40f18c697472f3251cadacd"
+  },
+  {
+    "archivo": "src/main/resources/templates/admin/category-form.html",
+    "estado": "modificado",
+    "antes": "b87bd981c3f270eb23332c86bae1fb7099cc6783b521bf35601419131d971c68",
+    "despues": "1ecd7e2a2f4517ebf6f4a1a86f07402f7c3f7cf38227f09138c76c484cc9771b"
+  },
+  {
+    "archivo": "src/main/resources/templates/admin/inquiries.html",
+    "estado": "modificado",
+    "antes": "2c5772c89a866458143cec783c2147dc6063eb82ee4c946e93160f42a8a8e6c6",
+    "despues": "1b91a6c9b177e318b382528cdbf6fe9696cec5533e518048d13fcd8702723812"
+  },
+  {
+    "archivo": "src/main/resources/templates/admin/product-form.html",
+    "estado": "modificado",
+    "antes": "71ab0e9885c82471f0e5076c0ff5c9f35cf7c546f4b7908fd64e25f2f586b86a",
+    "despues": "0936dd45f8e89373f39cc957ead51381b1aedd4f3b0243768d9f164e508cf006"
+  },
+  {
+    "archivo": "src/main/resources/templates/admin/products.html",
+    "estado": "modificado",
+    "antes": "129de47f4f0f4e950e17df201aea1b309088c30bb510af23e728365f5faa7548",
+    "despues": "afe60895331392ceb85b970fe3b727161288a5964cbcba758e5e77e45fb07061"
+  },
+  {
+    "archivo": "src/main/resources/templates/fragments/admin-layout.html",
+    "estado": "modificado",
+    "antes": "ac18f79a539c683ea4407153fa4f58f29f03d5c303815aeb309c9453794f8251",
+    "despues": "ab130b87a8fac5a4b270f0a17b9a51f6f2f1882218480467b9cfdf21ec98b0c5"
+  },
+  {
+    "archivo": "src/main/resources/templates/public/about.html",
+    "estado": "modificado",
+    "antes": "bd6a4ecdbed6a368e8f9648239925e8ef5c8f2e0e0f29e10b171247dd4f5a572",
+    "despues": "e035620bd371337f2c0f4f5f69815a71e1192187c683b9142d325f1f5c75c3a1"
+  },
+  {
+    "archivo": "src/main/resources/templates/public/contact.html",
+    "estado": "modificado",
+    "antes": "e1761c3130d4200541fe389749b96de2b4a4eda8b83a5ec1552ad5f5b8be0559",
+    "despues": "5347b366524295f655027d4968784696dddc0f4da1bf1112c586e6c2363a8eae"
+  },
+  {
+    "archivo": "src/test/java/com/deluxeterno/DeluxeEternoApplicationTests.java",
+    "estado": "modificado",
+    "antes": "064898987039b5a14859766f54207d7a4f39f6803667c4899748b91a3393f625",
+    "despues": "a6f9a93bcb5201e7c32d8f8e9efcb516082629b2f4024bef03d74b35bfaea64a"
+  },
+  {
+    "archivo": "src/main/java/com/deluxeterno/service/DuplicateCategoryException.java",
+    "estado": "creado"
+  },
+  {
+    "archivo": "src/main/resources/templates/error/404.html",
+    "estado": "creado"
+  },
+  {
+    "archivo": "src/main/resources/templates/error/500.html",
+    "estado": "creado"
+  },
+  {
+    "archivo": "src/test/java/com/deluxeterno/AuditRegressionTests.java",
+    "estado": "creado"
+  },
+  {
+    "archivo": "CONTRIBUTING.md",
+    "estado": "creado"
+  },
+  {
+    "archivo": ".github/workflows/verify.yml",
+    "estado": "creado"
+  },
+  {
+    "archivo": "docs/inspeccionar_productos.py",
+    "estado": "modificado",
+    "nota": "Revisado como herramienta auxiliar; no incluido en el ZIP inicial de src."
+  },
+  {
+    "archivo": "docs/clasificar_productos.py",
+    "estado": "modificado",
+    "nota": "Revisado como herramienta auxiliar; no incluido en el ZIP inicial de src."
+  },
+  {
+    "archivo": "docs/integrar_productos.py",
+    "estado": "modificado",
+    "nota": "Revisado como herramienta auxiliar; no incluido en el ZIP inicial de src."
+  },
+  {
+    "archivo": "docs/generar_favicon.cjs",
+    "estado": "modificado",
+    "nota": "Revisado como herramienta auxiliar; no incluido en el ZIP inicial de src."
+  }
+]

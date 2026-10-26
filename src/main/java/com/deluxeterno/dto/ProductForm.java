@@ -3,6 +3,7 @@ package com.deluxeterno.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 
 public class ProductForm {
 
@@ -16,6 +17,8 @@ public class ProductForm {
 
     @NotBlank(message = "La imagen es obligatoria.")
     @Size(max = 255, message = "La ruta de imagen no debe superar 255 caracteres.")
+    @Pattern(regexp = "^(?:/(?!/)[^\\s\\\\]*|https?://[^\\s\\\\]+)$",
+            message = "Usa una ruta local que comience con / o una URL http(s) válida.")
     private String imagePath;
 
     @NotNull(message = "La categoría es obligatoria.")

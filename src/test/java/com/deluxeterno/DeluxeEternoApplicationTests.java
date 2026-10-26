@@ -1,11 +1,16 @@
 package com.deluxeterno;
 
+import com.deluxeterno.domain.Category;
+import com.deluxeterno.domain.Product;
+import com.deluxeterno.repository.CategoryRepository;
+import com.deluxeterno.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
@@ -21,10 +26,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 class DeluxeEternoApplicationTests {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Test
     void publicHomeIsRendered() throws Exception {
@@ -89,5 +101,55 @@ class DeluxeEternoApplicationTests {
         mockMvc.perform(get("/login"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("auth/login"));
+    }
+
+    @Test
+    void customScriptIsIncludedInPublicPages() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("/js/main.js")));
+        mockMvc.perform(get("/nosotros"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("/js/main.js")));
+    }
+
+    @Test
+    void galleryIsReachableFromTheNavbar() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("id=\"mainNav\"")))
+                .andExpect(content().string(containsString("href=\"/galeria\"")));
+        mockMvc.perform(get("/galeria"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("public/gallery"));
+    }
+
+    @Test
+    void catalogRendersBootstrapModalForEachProduct() throws Exception {
+        Category category = categoryRepository.save(new Category("Modal", "Categoria de prueba"));
+        Product product = productRepository.saveAndFlush(
+                new Product("Producto con modal", "Descripcion", "/assets/gallery-1.svg", category));
+
+        mockMvc.perform(get("/productos"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data-bs-toggle=\"modal\"")))
+                .andExpect(content().string(containsString("productModal-" + product.getId())))
+                .andExpect(content().string(containsString("modal-dialog-centered")));
+    }
+
+    @Test
+    void inactiveProductCanStillBeEditedFromTheAdminPanel() throws Exception {
+        Category category = categoryRepository.save(new Category("Edicion", "Categoria de prueba"));
+        Product product = productRepository.saveAndFlush(
+                new Product("Producto inactivo", "Descripcion", "/assets/gallery-2.svg", category));
+        mockMvc.perform(post("/admin/products/" + product.getId() + "/delete")
+                .with(user("admin").roles("ADMIN"))
+                .with(csrf()));
+
+        mockMvc.perform(get("/admin/products/" + product.getId() + "/edit").with(user("admin").roles("ADMIN")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/product-form"));
+        mockMvc.perform(get("/productos/" + product.getId()))
+                .andExpect(status().isNotFound());
     }
 }

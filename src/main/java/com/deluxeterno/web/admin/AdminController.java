@@ -6,6 +6,8 @@ import com.deluxeterno.dto.CategoryForm;
 import com.deluxeterno.dto.ProductForm;
 import com.deluxeterno.service.CatalogService;
 import com.deluxeterno.service.InquiryService;
+import com.deluxeterno.service.DuplicateCategoryException;
+import org.springframework.dao.DataIntegrityViolationException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,8 +36,8 @@ public class AdminController {
     public String dashboard(Model model) {
         model.addAttribute("newInquiryCount", inquiryService.countNew());
         model.addAttribute("totalInquiryCount", inquiryService.countAll());
-        model.addAttribute("productCount", catalogService.findAllProducts().size());
-        model.addAttribute("categoryCount", catalogService.findAllCategories().size());
+        model.addAttribute("productCount", catalogService.countProducts());
+        model.addAttribute("categoryCount", catalogService.countCategories());
         return "admin/dashboard";
     }
 
@@ -58,6 +60,7 @@ public class AdminController {
             BindingResult bindingResult,
             Model model,
             RedirectAttributes redirectAttributes) {
+        validateCategory(productForm, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", catalogService.findAllCategories());
             return "admin/product-form";
@@ -69,7 +72,7 @@ public class AdminController {
 
     @GetMapping("/products/{id}/edit")
     public String editProduct(@PathVariable Long id, Model model) {
-        Product product = catalogService.findProduct(id);
+        Product product = catalogService.findAnyProduct(id);
         ProductForm form = new ProductForm();
         form.setName(product.getName());
         form.setDescription(product.getDescription());
@@ -89,6 +92,7 @@ public class AdminController {
             BindingResult bindingResult,
             Model model,
             RedirectAttributes redirectAttributes) {
+        validateCategory(productForm, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", catalogService.findAllCategories());
             model.addAttribute("productId", id);
@@ -105,6 +109,20 @@ public class AdminController {
         catalogService.deactivateProduct(id);
         redirectAttributes.addFlashAttribute("successMessage", "Producto eliminado del catálogo.");
         return "redirect:/admin/products";
+    }
+
+    @PostMapping("/products/{id}/activate")
+    public String activateProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        catalogService.activateProduct(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Producto publicado correctamente.");
+        return "redirect:/admin/products";
+    }
+
+    private void validateCategory(ProductForm form, BindingResult errors) {
+        if (!errors.hasFieldErrors("categoryId") && form.getCategoryId() != null
+                && !catalogService.categoryExists(form.getCategoryId())) {
+            errors.rejectValue("categoryId", "category.missing", "La categoría ya no está disponible. Selecciona otra.");
+        }
     }
 
     @GetMapping("/categories")
@@ -127,7 +145,12 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "admin/category-form";
         }
-        catalogService.createCategory(categoryForm);
+        try {
+            catalogService.createCategory(categoryForm);
+        } catch (DuplicateCategoryException exception) {
+            bindingResult.rejectValue("name", "category.duplicate", exception.getMessage());
+            return "admin/category-form";
+        }
         redirectAttributes.addFlashAttribute("successMessage", "Categoría creada correctamente.");
         return "redirect:/admin/categories";
     }
@@ -156,7 +179,14 @@ public class AdminController {
             model.addAttribute("editing", true);
             return "admin/category-form";
         }
-        catalogService.updateCategory(id, categoryForm);
+        try {
+            catalogService.updateCategory(id, categoryForm);
+        } catch (DuplicateCategoryException exception) {
+            bindingResult.rejectValue("name", "category.duplicate", exception.getMessage());
+            model.addAttribute("categoryId", id);
+            model.addAttribute("editing", true);
+            return "admin/category-form";
+        }
         redirectAttributes.addFlashAttribute("successMessage", "Categoría actualizada correctamente.");
         return "redirect:/admin/categories";
     }
@@ -168,6 +198,8 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("successMessage", "Categoría eliminada correctamente.");
         } catch (IllegalStateException exception) {
             redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+        } catch (DataIntegrityViolationException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", "La categoría tiene registros asociados y no se puede eliminar.");
         }
         return "redirect:/admin/categories";
     }

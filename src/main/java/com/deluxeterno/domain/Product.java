@@ -29,6 +29,12 @@ public class Product {
     @Column(nullable = false, length = 255)
     private String imagePath;
 
+    @Column(length = 255)
+    private String secondaryImagePath;
+
+    @Column(unique = true, length = 40)
+    private String catalogKey;
+
     @Column(nullable = false)
     private boolean active = true;
 
@@ -77,6 +83,14 @@ public class Product {
     public boolean isActive() {
         return active;
     }
+
+    public String getSecondaryImagePath() { return secondaryImagePath; }
+
+    public void setSecondaryImagePath(String secondaryImagePath) { this.secondaryImagePath = secondaryImagePath; }
+
+    public String getCatalogKey() { return catalogKey; }
+
+    public void setCatalogKey(String catalogKey) { this.catalogKey = catalogKey; }
 
     public void setActive(boolean active) {
         this.active = active;

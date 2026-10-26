@@ -1,6 +1,17 @@
 target/
+docs/*
+!docs/*.py
+!docs/*.cjs
+!docs/auditoria/
+docs/auditoria/*
+!docs/auditoria/*.md
+!docs/auditoria/cambios.json
 .idea/
 .vscode/
 *.iml
 .env
+.env.*
+!.env.example
 .DS_Store
+__pycache__/
+.tools/

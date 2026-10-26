@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional(readOnly = true)
@@ -42,7 +44,8 @@ public class InquiryService {
 
     @Transactional
     public void updateStatus(Long id, InquiryStatus status) {
-        Inquiry inquiry = inquiryRepository.findById(id).orElseThrow();
+        Inquiry inquiry = inquiryRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Consulta no encontrada"));
         inquiry.setStatus(status);
     }
 }

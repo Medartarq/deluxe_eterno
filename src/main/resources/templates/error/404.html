@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Página no encontrada')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main class="container py-5"><div class="empty-state my-5"><i class="bi bi-search" aria-hidden="true"></i><div><span class="section-kicker">404</span><h1 class="h2">No encontramos este detalle</h1><p>La página o el producto que buscas no está disponible.</p></div><a class="btn btn-primary" th:href="@{/productos}">Volver al catálogo</a></div></main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body></html>

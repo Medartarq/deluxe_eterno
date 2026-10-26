@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class CatalogService {
     }
 
     public List<Category> findCategories() {
-        return categoryRepository.findAllByOrderByNameAsc();
+        return categoryRepository.findPublishedCategories();
     }
 
     public List<Category> findAllCategories() {
@@ -43,8 +44,23 @@ public class CatalogService {
         return productRepository.findAllByOrderByNameAsc();
     }
 
+    public List<Product> findFeaturedProducts() {
+        return productRepository.findTop3ByActiveTrueOrderByNameAsc();
+    }
+
+    public long countProducts() { return productRepository.count(); }
+
+    public long countCategories() { return categoryRepository.count(); }
+
+    public boolean categoryExists(Long id) { return categoryRepository.existsById(id); }
+
     public Product findProduct(Long id) {
         return productRepository.findByIdAndActiveTrue(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
+    }
+
+    public Product findAnyProduct(Long id) {
+        return productRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
     }
 
@@ -77,25 +93,48 @@ public class CatalogService {
     }
 
     @Transactional
+    public void activateProduct(Long id) {
+        findAnyProduct(id).setActive(true);
+    }
+
+    @Transactional
     public Category createCategory(CategoryForm form) {
-        return categoryRepository.save(new Category(form.getName(), form.getDescription()));
+        String name = form.getName().trim();
+        if (categoryRepository.existsByNameIgnoreCase(name)) {
+            throw new DuplicateCategoryException();
+        }
+        return saveCategory(new Category(name, form.getDescription()));
     }
 
     @Transactional
     public Category updateCategory(Long id, CategoryForm form) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
-        category.setName(form.getName());
+        String name = form.getName().trim();
+        if (categoryRepository.existsByNameIgnoreCaseAndIdNot(name, id)) {
+            throw new DuplicateCategoryException();
+        }
+        category.setName(name);
         category.setDescription(form.getDescription());
-        return categoryRepository.save(category);
+        return saveCategory(category);
+    }
+
+    private Category saveCategory(Category category) {
+        try {
+            // Resolver también una carrera entre dos altas antes de salir del servicio.
+            return categoryRepository.saveAndFlush(category);
+        } catch (DataIntegrityViolationException exception) {
+            throw new DuplicateCategoryException();
+        }
     }
 
     @Transactional
     public void deleteCategory(Long id) {
+        Category category = findCategory(id);
         if (productRepository.existsByCategory_Id(id)) {
             throw new IllegalStateException("No se puede eliminar una categoría con productos asociados.");
         }
-        categoryRepository.deleteById(id);
+        categoryRepository.delete(category);
     }
 
     public Category findCategory(Long id) {

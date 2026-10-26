@@ -32,7 +32,7 @@ public class PublicController {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("categories", catalogService.findCategories());
-        model.addAttribute("products", catalogService.findActiveProducts(null).stream().limit(3).toList());
+        model.addAttribute("products", catalogService.findFeaturedProducts());
         return "public/index";
     }
 
@@ -63,7 +63,10 @@ public class PublicController {
     }
 
     @GetMapping("/galeria")
-    public String gallery() {
+    public String gallery(@RequestParam(value = "categoria", required = false) Long categoryId, Model model) {
+        model.addAttribute("products", catalogService.findActiveProducts(categoryId));
+        model.addAttribute("categories", catalogService.findCategories());
+        model.addAttribute("selectedCategory", categoryId);
         return "public/gallery";
     }
 

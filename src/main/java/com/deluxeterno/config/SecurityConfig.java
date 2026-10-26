@@ -32,6 +32,7 @@ public class SecurityConfig {
                                 "/css/**",
                                 "/js/**",
                                 "/assets/**",
+                                "/favicon.ico",
                                 "/error")
                         .permitAll()
                         .requestMatchers("/admin/**")

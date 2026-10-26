@@ -56,6 +56,8 @@ La contraseña administrativa no se guarda en el repositorio. El usuario inicial
 
 ## Comandos
 
+Para colaborar mediante GitHub, consultar [CONTRIBUTING.md](CONTRIBUTING.md). El workflow de verificación usa H2 para pruebas y no necesita credenciales de MySQL.
+
 ```powershell
 mvn test
 mvn clean verify
@@ -91,6 +93,15 @@ La aplicación queda disponible en `http://localhost:8080`.
 - Detalle de producto.
 - Consultas públicas validadas y persistidas.
 - Panel administrativo protegido para productos, categorías y estados de consulta.
-- Contenido público basado en información comercial confirmada; los registros de muestra quedan inactivos hasta ser reemplazados por offerings reales.
+- Catálogo inicial de 35 productos con fotografías propias de la entrega, siete categorías, una segunda vista de Ruta de Aventuras y una colección de minirramos en la galería.
+- Fotografías completas en tarjetas verticales, detalle y vista rápida, con carga diferida.
+
+## Importación del catálogo
+
+Al iniciar Spring Boot, `CatalogDataInitializer` carga los productos de `src/main/resources/catalog/products.properties`. Cada producto importado tiene una clave estable: los siguientes arranques no duplican registros ni sobrescriben ediciones o desactivaciones del administrador. Las categorías públicas solo incluyen productos activos. Las categorías anteriores permanecen disponibles en administración.
+
+El inventario editorial original se conserva en `Productos/catalogo-productos.json`. Para volver a exportar los recursos desde ese inventario puede ejecutarse `docs/integrar_productos.py` con Python; solo copia fotografías y genera el archivo de propiedades. Los JPG originales permanecen intactos. Las tarjetas usan un marco 4:5 con recorte visual moderado y posiciones específicas para las fotografías revisadas. El borde negro de Jardín de Caricias se oculta en su miniatura; Spider-Man conserva la imagen completa para no añadir cortes. El detalle y el modal muestran las fotografías originales completas.
+
+Después de actualizar el código hay que reiniciar la instancia con su configuración habitual de MySQL. Hibernate, con `ddl-auto=update`, agrega las columnas `catalog_key` y `secondary_image_path`. Si se usa `validate`, aplicar previamente la migración equivalente. La importación se ejecuta dentro de una transacción.
 
 Las siguientes etapas del curso pueden agregar servicios, galería, canales de contacto administrables, API REST y JWT, sin modificar el prototipo APF1 preservado en `../deluxe_eterno_avance/`.

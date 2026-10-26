@@ -5,13 +5,25 @@
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 <main class="py-5 bg-light">
     <div class="container">
-        <div class="text-center mb-5"><span class="section-kicker">Galería</span><h1 class="fw-bold">Ideas para tu próximo detalle</h1><p class="text-secondary mx-auto section-subtitle">Descubre opciones y realiza una consulta para conocer nuestros productos y servicios disponibles.</p></div>
-        <div class="feature-card mx-auto p-5 text-center" style="max-width: 720px;">
-            <i class="bi bi-images fs-1"></i>
-            <h2 class="h4 mt-3">Galería en actualización</h2>
-            <p class="text-secondary">Estamos preparando imágenes autorizadas para mostrar algunos de nuestros trabajos y opciones.</p>
-            <a class="btn btn-primary" th:href="@{/productos}">Consultar productos</a>
+        <div class="text-center mb-5"><span class="section-kicker">Galería</span><h1 class="fw-bold">Detalles que cuentan historias</h1><p class="text-secondary mx-auto section-subtitle">Flores, personajes y regalos con un toque personal. Encuentra inspiración para tu próxima ocasión especial.</p></div>
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-5" aria-label="Filtrar galería">
+            <a class="btn btn-outline-primary btn-sm" th:classappend="${selectedCategory == null} ? ' active'" th:href="@{/galeria}">Todos</a>
+            <a class="btn btn-outline-primary btn-sm" th:each="category : ${categories}" th:classappend="${selectedCategory != null and selectedCategory == category.id} ? ' active'" th:href="@{/galeria(categoria=${category.id})}" th:text="${category.name}">Categoría</a>
         </div>
+        <div class="row g-4">
+            <div class="col-12 col-md-6 col-lg-4" th:each="product : ${products}">
+                <article class="card product-card gallery-card h-100">
+                    <a class="product-photo" th:href="@{/productos/{id}(id=${product.id})}"><img th:src="@{${product.imagePath}}" class="card-img-top" th:alt="${product.name}" loading="lazy" width="750" height="1000" alt="Producto"></a>
+                    <div class="card-body"><span class="section-kicker" th:text="${product.category.name}">Categoría</span><h2 class="h5" th:text="${product.name}">Producto</h2><a class="btn btn-outline-primary btn-sm mt-2" th:href="@{/productos/{id}(id=${product.id})}">Descubrir detalle <i class="bi bi-arrow-up-right ms-1"></i></a></div>
+                </article>
+            </div>
+        </div>
+        <div class="empty-state" th:if="${products.isEmpty()}"><div><h2 class="h4">Busquemos un detalle para ti</h2><p>Consulta las opciones que podemos preparar para tu ocasión.</p></div><a class="btn btn-primary" th:href="@{/contacto}">Consultar opciones</a></div>
+        <section class="collection-showcase mt-5" th:if="${selectedCategory == null}">
+            <img th:src="@{/assets/products/flores-y-arreglos/pequenos-grandes-detalles.jpg}" alt="Colección de minirramos con envolturas rosadas y tarjetas" loading="lazy" width="750" height="1000">
+            <div><span class="section-kicker">Una colección para compartir</span><h2>Pequeños Grandes Detalles</h2><p class="text-secondary">Minirramos que convierten un gesto sencillo en un momento especial. Esta fotografía muestra distintas propuestas de la colección.</p><a class="btn btn-primary" th:href="@{/contacto}">Consultar la colección</a></div>
+        </section>
+        <p class="small text-secondary text-center mt-5 mb-0">Cada detalle puede personalizarse. Consulta la composición y disponibilidad de la opción que te guste.</p>
     </div>
 </main>
 <footer th:replace="~{fragments/layout :: footer}"></footer>

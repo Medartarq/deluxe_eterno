@@ -13,6 +13,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByActiveTrueOrderByNameAsc();
 
     @EntityGraph(attributePaths = "category")
+    List<Product> findTop3ByActiveTrueOrderByNameAsc();
+
+    @EntityGraph(attributePaths = "category")
     List<Product> findByActiveTrueAndCategory_IdOrderByNameAsc(Long categoryId);
 
     @EntityGraph(attributePaths = "category")
@@ -22,4 +25,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByIdAndActiveTrue(Long id);
 
     boolean existsByCategory_Id(Long categoryId);
+
+    boolean existsByCatalogKey(String catalogKey);
+
+    Optional<Product> findByCatalogKey(String catalogKey);
 }

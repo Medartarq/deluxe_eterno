@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="productModals">
+    <div th:each="product : ${products}" class="modal fade" th:id="'productModal-' + ${product.id}" tabindex="-1"
+         th:aria-labelledby="'productModalLabel-' + ${product.id}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header">
+                    <h2 class="modal-title h5" th:id="'productModalLabel-' + ${product.id}"
+                        th:text="${product.name}">Producto</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <img th:src="@{${product.imagePath}}" class="product-modal-image rounded-4 mb-3" loading="lazy"
+                         th:alt="${product.name}" alt="Producto">
+                    <span class="badge text-bg-light mb-2" th:text="${product.category.name}">Categoría</span>
+                    <p class="text-secondary mb-0" th:text="${product.description}">Descripción</p>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-outline-secondary" th:href="@{/productos/{id}(id=${product.id})}"
+                       >Ver detalle</a>
+                    <a class="btn btn-primary" th:href="@{/contacto}">
+                        <i class="bi bi-chat-dots me-2"></i>Consultar opciones
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>
