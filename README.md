@@ -110,6 +110,15 @@ Las siguientes etapas del curso pueden agregar servicios, galería, canales de c
 
 El panel ADMIN incluye editor visual, fotografías, borradores/publicación, precios y stock con movimientos auditables. Consulta [la guía del módulo](docs/modulo-productos/README.md) para uso, actualización de esquema y almacenamiento de imágenes mediante `MEDIA_DIRECTORY`. Las fotos nuevas y los registros MySQL se respaldan y comparten por separado de GitHub.
 
-## Exposición y modo demo
+## Autollenado y entorno demo independiente
 
-Tras reiniciar, un administrador puede pulsar **Activar demo** en el panel. El modo habilita autollenado de categorías, productos, stock y contacto en su sesión, sin guardar automáticamente ni cambiar permisos. La pantalla `/admin/demo` contiene el recorrido recomendado. Los datos guardados persisten en la base actual. Puede deshabilitarse la función con `DEMO_AVAILABLE=false`. Consulta [el guion y la verificación de integración](docs/modulo-productos/DEMO-E-INTEGRACION.md).
+El autollenado completa formularios de la sesión sin guardarlos automáticamente. No selecciona la base de datos.
+
+Para trabajar con datos separados y escenarios precargados, usa el perfil `demo` con MySQL `deluxe_eterno_demo`:
+
+```powershell
+.\scripts\demo.ps1 -Action Initialize
+.\scripts\demo.ps1 -Action Start
+```
+
+La demo se abre en http://localhost:8081 y utiliza su propia cuenta MySQL, administrador, cookie y carpeta de imágenes. Initialize solicita las credenciales MySQL locales; las credenciales generadas de la demo se guardan en `.env.demo.local`, ignorado por Git. Reiniciar conserva cambios; `-Action Reset`, con la demo detenida, recupera los escenarios iniciales. Consulta [la guía del entorno demo](docs/modulo-productos/ENTORNO-DEMO.md).

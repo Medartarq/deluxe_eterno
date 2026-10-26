@@ -1,33 +1,20 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Galería')}"></head>
-<body>
+<body class="public-editorial-page gallery-page">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 <div th:replace="~{fragments/demo :: banner}"></div>
-<main class="py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5"><span class="section-kicker">Galería</span><h1 class="fw-bold">Detalles que cuentan historias</h1><p class="text-secondary mx-auto section-subtitle">Flores, personajes y regalos con un toque personal. Encuentra inspiración para tu próxima ocasión especial.</p></div>
-        <div class="d-flex flex-wrap justify-content-center gap-2 mb-5" aria-label="Filtrar galería">
-            <a class="btn btn-outline-primary btn-sm" th:classappend="${selectedCategory == null} ? ' active'" th:href="@{/galeria}">Todos</a>
-            <a class="btn btn-outline-primary btn-sm" th:each="category : ${categories}" th:classappend="${selectedCategory != null and selectedCategory == category.id} ? ' active'" th:href="@{/galeria(categoria=${category.id})}" th:text="${category.name}">Categoría</a>
-        </div>
-        <div class="row g-4">
-            <div class="col-12 col-md-6 col-lg-4" th:each="product : ${products}">
-                <article class="card product-card gallery-card h-100">
-                    <a class="product-photo" th:href="@{/productos/{id}(id=${product.id})}"><img th:src="@{${product.imagePath}}" th:style="${product.focusX != 50 || product.focusY != 50} ? 'object-position: ' + ${product.focusX} + '% ' + ${product.focusY} + '%' : null" class="card-img-top" th:alt="${product.name}" loading="lazy" width="750" height="1000" alt="Producto"></a>
-                    <div class="card-body"><span class="section-kicker" th:text="${product.category.name}">Categoría</span><h2 class="h5" th:text="${product.name}">Producto</h2><a class="btn btn-outline-primary btn-sm mt-2" th:href="@{/productos/{id}(id=${product.id})}">Descubrir detalle <i class="bi bi-arrow-up-right ms-1"></i></a></div>
-                </article>
-            </div>
-        </div>
-        <div class="empty-state" th:if="${products.isEmpty()}"><div><h2 class="h4">Busquemos un detalle para ti</h2><p>Consulta las opciones que podemos preparar para tu ocasión.</p></div><a class="btn btn-primary" th:href="@{/contacto}">Consultar opciones</a></div>
-        <section class="collection-showcase mt-5" th:if="${selectedCategory == null}">
-            <img th:src="@{/assets/products/flores-y-arreglos/pequenos-grandes-detalles.jpg}" alt="Colección de minirramos con envolturas rosadas y tarjetas" loading="lazy" width="750" height="1000">
-            <div><span class="section-kicker">Una colección para compartir</span><h2>Pequeños Grandes Detalles</h2><p class="text-secondary">Minirramos que convierten un gesto sencillo en un momento especial. Esta fotografía muestra distintas propuestas de la colección.</p><a class="btn btn-primary" th:href="@{/contacto}">Consultar la colección</a></div>
-        </section>
-        <p class="small text-secondary text-center mt-5 mb-0">Cada detalle puede personalizarse. Consulta la composición y disponibilidad de la opción que te guste.</p>
-    </div>
+<main>
+<header class="editorial-page-hero gallery-hero"><div class="container"><span class="section-kicker">INSPIRACIÓN DELUXE ETERNO</span><h1>Detalles que cuentan <em>historias.</em></h1><p>Flores, personajes y regalos con un toque personal. Descubre composiciones de nuestro catálogo e imagina tu próximo detalle.</p><a th:if="${selectedCategory == null}" class="editorial-text-link" href="#coleccion">Conoce Pequeños Grandes Detalles <i class="bi bi-arrow-down" aria-hidden="true"></i></a></div></header>
+<section class="editorial-content" aria-label="Galería de detalles"><div class="container">
+<nav class="editorial-category-nav" aria-label="Filtrar galería"><a th:classappend="${selectedCategory == null} ? 'is-selected'" th:attr="aria-current=${selectedCategory == null} ? 'page' : null" th:href="@{/galeria}">Todos los detalles</a><a th:each="category : ${categories}" th:classappend="${selectedCategory != null and selectedCategory == category.id} ? 'is-selected'" th:attr="aria-current=${selectedCategory != null and selectedCategory == category.id} ? 'page' : null" th:href="@{/galeria(categoria=${category.id})}" th:text="${category.name}"></a></nav>
+<div class="gallery-summary"><span><strong th:text="${products.size()}">0</strong> detalles para inspirarte</span><a th:href="@{/productos(categoria=${selectedCategory})}">Explorar el catálogo <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></div>
+<div class="editorial-gallery-grid" th:if="${!products.isEmpty()}"><article class="editorial-gallery-tile" th:each="product, position : ${products}"><a th:href="@{/productos/{id}(id=${product.id})}" th:aria-label="${'Descubrir ' + product.name}"><div class="product-photo"><img th:src="@{${product.imagePath}}" th:style="${product.focusX != 50 || product.focusY != 50} ? 'object-position: ' + ${product.focusX} + '% ' + ${product.focusY} + '%' : null" class="card-img-top" th:alt="${product.name}" th:attr="loading=${position.index < 6} ? 'eager' : 'lazy'" decoding="async" width="750" height="1000"><span class="gallery-photo-action"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></div><div class="gallery-tile-caption"><div><span th:text="${product.category.name}"></span><h2 th:text="${product.name}"></h2></div><i class="bi bi-arrow-right" aria-hidden="true"></i></div></a></article></div>
+<div class="empty-state" th:if="${products.isEmpty()}"><i class="bi bi-flower1" aria-hidden="true"></i><div><h2 class="h4">Busquemos un detalle para ti</h2><p>Consulta las opciones que podemos preparar para tu ocasión.</p></div><a class="btn btn-primary" th:href="@{/contacto}">Consultar opciones</a></div>
+<section id="coleccion" class="gallery-collection" th:if="${selectedCategory == null}" aria-labelledby="collectionTitle"><div class="gallery-collection-photo"><img th:src="@{/assets/products/flores-y-arreglos/pequenos-grandes-detalles.jpg}" alt="Colección de minirramos con envolturas rosadas y tarjetas" loading="lazy" width="750" height="1000"></div><div><span class="section-kicker">UNA COLECCIÓN PARA COMPARTIR</span><h2 id="collectionTitle">Pequeños Grandes Detalles</h2><p>Minirramos que convierten un gesto sencillo en un momento especial. Esta fotografía muestra distintas propuestas de la colección.</p><a class="btn btn-primary" th:href="@{/contacto}">Consultar la colección <i class="bi bi-arrow-up-right ms-2" aria-hidden="true"></i></a></div></section>
+<p class="gallery-note"><i class="bi bi-heart" aria-hidden="true"></i> Cada detalle puede personalizarse. Consulta su composición y disponibilidad.</p>
+</div></section>
 </main>
 <footer th:replace="~{fragments/layout :: footer}"></footer>
 <script th:replace="~{fragments/layout :: scripts}"></script>
-</body>
-</html>
+</body></html>

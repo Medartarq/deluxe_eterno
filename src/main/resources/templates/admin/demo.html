@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/admin-layout :: adminHead('Modo demo')}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead('Autollenado')}"></head>
 <body class="admin-body">
 <nav th:replace="~{fragments/admin-layout :: adminNavbar}"></nav>
 <main class="container py-4">
     <div th:replace="~{fragments/admin-layout :: adminFlash}"></div>
     <div class="admin-page-heading">
-        <div><span class="section-kicker">HERRAMIENTAS</span><h1>Modo demo</h1><p>Completa tus formularios con datos de ejemplo y ajústalos a lo que necesitas.</p></div>
-        <form th:action="@{/admin/demo/toggle}" method="post"><input type="hidden" name="enabled" th:value="${!demoEnabled}"><button class="btn btn-primary" type="submit" th:text="${demoEnabled} ? 'Desactivar modo demo' : 'Activar modo demo'"></button></form>
+        <div><span class="section-kicker">HERRAMIENTAS</span><h1>Autollenado</h1><p>Completa tus formularios con datos de ejemplo y ajústalos a lo que necesitas.</p></div>
+        <form th:action="@{/admin/demo/toggle}" method="post"><input type="hidden" name="enabled" th:value="${!demoEnabled}"><button class="btn btn-primary" type="submit" th:text="${demoEnabled} ? 'Desactivar autollenado' : 'Activar autollenado'"></button></form>
     </div>
     <div class="alert alert-light border" role="status"><strong th:text="${demoEnabled} ? 'Activo en esta sesión.' : 'Desactivado en esta sesión.'"></strong> Puedes activar o desactivar el autollenado cuando lo necesites. También se desactiva al cerrar sesión.</div>
     <section class="editor-section demo-help" aria-labelledby="demoHelpTitle">

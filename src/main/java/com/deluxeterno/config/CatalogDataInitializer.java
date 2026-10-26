@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 @Component
+@org.springframework.context.annotation.Profile("!demo")
 public class CatalogDataInitializer implements CommandLineRunner {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;

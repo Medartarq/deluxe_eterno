@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org"><body>
-<div th:fragment="banner" th:if="${demoEnabled}" class="demo-banner" role="status"><span class="demo-badge">DEMO</span><div><strong>Modo demo activo</strong><span>Completa los campos con un ejemplo y revísalo antes de guardar.</span></div><a th:href="@{/admin/demo}">Configurar modo demo</a></div>
+<div th:fragment="banner" th:if="${demoEnvironment == true or demoEnabled == true}" class="demo-banner" role="status"><span class="demo-badge">DEMO</span><div><strong th:text="${demoEnvironment} ? 'Entorno demo' : 'Autollenado activo'"></strong><span th:text="${demoEnvironment} ? 'Estás usando datos de ejemplo. Los cambios se guardan únicamente en este entorno.' : 'Completa los campos con un ejemplo y revísalo antes de guardar.'"></span></div><a th:if="${workspaceAccess != null and workspaceAccess.administrator}" th:href="@{/admin/demo}">Configurar autollenado</a></div>
 <div th:fragment="tools(kind)" th:if="${demoEnabled}" class="demo-tools" th:data-demo-kind="${kind}" th:data-physical="${kind == 'stock' ? product.stockQuantity : null}" th:data-reserved="${kind == 'stock' ? product.reservedQuantity : null}">
     <div><span class="demo-badge">DEMO</span><strong>Completar con un ejemplo</strong><p>Datos de ejemplo que puedes ajustar antes de guardar.</p></div>
     <div class="demo-controls">

@@ -1,24 +1,24 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Servicios')}"></head>
-<body>
+<body class="public-editorial-page services-page">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 <div th:replace="~{fragments/demo :: banner}"></div>
-<main class="py-5">
-    <div class="container">
-        <div class="text-center mb-5"><span class="section-kicker">Servicios</span><h1 class="fw-bold">Opciones para cada celebración</h1><p class="text-secondary mx-auto section-subtitle">Elige la opción que mejor corresponda con tu ocasión y consúltanos por las alternativas disponibles.</p></div>
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-4"><div class="feature-card h-100 p-4 rounded-4"><i class="bi bi-flower1 fs-2"></i><h2 class="h5 mt-3">Flores y arreglos</h2><p class="text-secondary mb-0">Flores naturales, eternas y arreglos para ocasiones especiales.</p></div></div>
-            <div class="col-md-6 col-lg-4"><div class="feature-card h-100 p-4 rounded-4"><i class="bi bi-cup-hot fs-2"></i><h2 class="h5 mt-3">Desayunos y picnics</h2><p class="text-secondary mb-0">Desayunos sorpresa y picnics para celebrar momentos únicos.</p></div></div>
-            <div class="col-md-6 col-lg-4"><div class="feature-card h-100 p-4 rounded-4"><i class="bi bi-box2-heart fs-2"></i><h2 class="h5 mt-3">Boxes y regalos personalizados</h2><p class="text-secondary mb-0">Combinaciones y detalles personalizados para personas y ocasiones especiales.</p></div></div>
-            <div class="col-md-6 col-lg-4"><div class="feature-card h-100 p-4 rounded-4"><i class="bi bi-image fs-2"></i><h2 class="h5 mt-3">Cuadros y llaveros</h2><p class="text-secondary mb-0">Regalos personalizados con un detalle especial para conservar una fecha o mensaje.</p></div></div>
-            <div class="col-md-6 col-lg-4"><div class="feature-card h-100 p-4 rounded-4"><i class="bi bi-briefcase fs-2"></i><h2 class="h5 mt-3">Corporativos y profesionales</h2><p class="text-secondary mb-0">Opciones para empresas, profesionales y eventos especiales.</p></div></div>
-            <div class="col-md-6 col-lg-4"><div class="feature-card h-100 p-4 rounded-4"><i class="bi bi-stars fs-2"></i><h2 class="h5 mt-3">Detalles por ocasión</h2><p class="text-secondary mb-0">Ideas para cumpleaños, graduaciones, bodas y otras celebraciones.</p></div></div>
-        </div>
-        <div class="text-center mt-5"><a class="btn btn-primary btn-lg" th:href="@{/contacto}">Consultar opciones</a></div>
-    </div>
+<main>
+<header class="editorial-page-hero services-hero"><div class="container"><span class="section-kicker">LO QUE PODEMOS CREAR CONTIGO</span><h1>Opciones para <em>cada celebración.</em></h1><p>Flores, regalos y detalles personalizados para expresar emociones. Elige una idea y conversemos sobre las opciones para tu ocasión.</p><a class="editorial-text-link" th:href="@{/galeria}">Encuentra inspiración en nuestra galería <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div></header>
+<section class="editorial-content" aria-label="Nuestros servicios"><div class="container">
+<div class="services-grid">
+<article class="service-option"><div class="service-option-top"><span class="service-icon"><i class="bi bi-flower1" aria-hidden="true"></i></span><span>01</span></div><h2>Flores y arreglos</h2><p>Flores naturales, eternas y arreglos para acompañar una ocasión especial con color y emoción.</p><a th:href="@{/contacto}">Consultar arreglos <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></article>
+<article class="service-option"><div class="service-option-top"><span class="service-icon"><i class="bi bi-cup-hot" aria-hidden="true"></i></span><span>02</span></div><h2>Desayunos y picnics</h2><p>Desayunos sorpresa y propuestas de picnic para compartir y celebrar momentos únicos.</p><a th:href="@{/contacto}">Consultar opciones <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></article>
+<article class="service-option"><div class="service-option-top"><span class="service-icon"><i class="bi bi-box2-heart" aria-hidden="true"></i></span><span>03</span></div><h2>Boxes y regalos personalizados</h2><p>Combinaciones de pequeños detalles, personajes y dedicatorias pensadas para una persona especial.</p><a th:href="@{/contacto}">Consultar un regalo <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></article>
+<article class="service-option"><div class="service-option-top"><span class="service-icon"><i class="bi bi-image" aria-hidden="true"></i></span><span>04</span></div><h2>Cuadros y llaveros</h2><p>Regalos personalizados para conservar una fecha, una fotografía o un mensaje con significado.</p><a th:href="@{/contacto}">Consultar personalización <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></article>
+<article class="service-option"><div class="service-option-top"><span class="service-icon"><i class="bi bi-briefcase" aria-hidden="true"></i></span><span>05</span></div><h2>Corporativos y profesionales</h2><p>Opciones para empresas, profesionales y eventos que buscan compartir un detalle especial.</p><a th:href="@{/contacto}">Cuéntanos tu propuesta <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></article>
+<article class="service-option"><div class="service-option-top"><span class="service-icon"><i class="bi bi-stars" aria-hidden="true"></i></span><span>06</span></div><h2>Detalles por ocasión</h2><p>Ideas para cumpleaños, graduaciones, bodas y esos momentos que merecen celebrarse.</p><a th:href="@{/contacto}">Consultar mi ocasión <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></article>
+</div>
+<div class="services-next-steps"><div><span class="section-kicker">EMPECEMOS CON TU IDEA</span><h2>De una intención a un detalle especial.</h2></div><ol><li><span>1</span><div><strong>Cuéntanos la ocasión</strong><p>Comparte para quién es y qué te gustaría expresar.</p></div></li><li><span>2</span><div><strong>Consulta las opciones</strong><p>Conversemos sobre composición y personalización.</p></div></li><li><span>3</span><div><strong>Coordina los detalles</strong><p>Consulta disponibilidad y preparación antes de decidir.</p></div></li></ol></div>
+<div class="editorial-invitation"><div><h2>¿Ya tienes una idea en mente?</h2><p>Estamos para ayudarte a darle forma.</p></div><a class="btn btn-primary" th:href="@{/contacto}">Hablemos de tu detalle <i class="bi bi-arrow-up-right ms-2" aria-hidden="true"></i></a></div>
+</div></section>
 </main>
 <footer th:replace="~{fragments/layout :: footer}"></footer>
 <script th:replace="~{fragments/layout :: scripts}"></script>
-</body>
-</html>
+</body></html>

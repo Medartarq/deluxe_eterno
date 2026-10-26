@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: ${DEMO_DB_URL:jdbc:mysql://127.0.0.1:3306/deluxe_eterno_demo?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    username: ${DEMO_DB_USERNAME:deluxe_demo_local}
+    password: ${DEMO_DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  address: 127.0.0.1
+  port: ${DEMO_PORT:8081}
+  servlet:
+    session:
+      cookie:
+        name: DELUXE_DEMO_SESSION
+app:
+  demo:
+    isolated: true
+    available: true
+    reset-on-start: false
+    exit-after-initialize: false
+    admin-username: ${DEMO_ADMIN_USERNAME:admin-demo}
+    admin-password: ${DEMO_ADMIN_PASSWORD}
+  media:
+    directory: ./uploads-demo

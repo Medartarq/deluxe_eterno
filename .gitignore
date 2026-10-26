@@ -19,3 +19,5 @@ uploads/
 !docs/modulo-productos/
 docs/modulo-productos/*
 !docs/modulo-productos/*.md
+
+uploads-demo/

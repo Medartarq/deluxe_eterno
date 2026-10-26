@@ -1,58 +1,27 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Contacto')}"></head>
-<body>
+<body class="public-editorial-page contact-page">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 <div th:replace="~{fragments/demo :: banner}"></div>
-<main class="py-5">
-    <div class="container">
-        <div class="row g-5">
-            <div class="col-lg-5">
-                <span class="section-kicker">Contacto</span>
-                <h1 class="fw-bold">Hablemos de tu próximo detalle</h1>
-                <p class="text-secondary">Elige uno de nuestros canales oficiales o registra tu consulta para que podamos conocer lo que buscas.</p>
-                <div class="list-group list-group-flush contact-list contact-channels">
-                    <div class="list-group-item px-0"><i class="bi bi-geo-alt me-2"></i>Trujillo, La Libertad, Perú</div>
-                    <a class="list-group-item list-group-item-action px-0 text-decoration-none" href="https://www.instagram.com/deluxeeterno" target="_blank" rel="noopener"><i class="bi bi-instagram me-2"></i>Instagram</a>
-                    <a class="list-group-item list-group-item-action px-0 text-decoration-none" href="https://www.facebook.com/profile.php?id=61550209177936" target="_blank" rel="noopener"><i class="bi bi-facebook me-2"></i>Facebook</a>
-                    <a class="list-group-item list-group-item-action px-0 text-decoration-none" href="https://www.tiktok.com/@deluxeeterno" target="_blank" rel="noopener"><i class="bi bi-tiktok me-2"></i>TikTok</a>
-                    <a class="list-group-item list-group-item-action px-0 text-decoration-none" href="https://www.pinterest.com/deluxeeterno/_created/" target="_blank" rel="noopener"><i class="bi bi-pinterest me-2"></i>Pinterest</a>
-                    <a class="list-group-item list-group-item-action px-0 text-decoration-none" href="https://linktr.ee/tiendavirtual.deluxeeterno" target="_blank" rel="noopener"><i class="bi bi-link-45deg me-2"></i>Todos los enlaces</a>
-                </div>
-            </div>
-            <div class="col-lg-7">
-                <div class="alert alert-success" role="status" th:if="${successMessage}" th:text="${successMessage}">Consulta registrada.</div>
-                <form class="card border-0 shadow-sm p-4 p-md-5" th:action="@{/contactos}" th:object="${inquiryForm}" method="post">
+<main class="contact-main"><div class="container contact-layout">
+<div class="contact-introduction"><span class="section-kicker">ESTAMOS PARA ESCUCHARTE</span><h1>Hablemos de tu <em>próximo detalle.</em></h1><p class="contact-lead">Cuéntanos la ocasión, la persona y lo que te gustaría expresar. Conversemos sobre las opciones para hacerlo especial.</p><span class="contact-location"><i class="bi bi-geo-alt" aria-hidden="true"></i> Trujillo, La Libertad, Perú</span>
+<div class="contact-social-heading"><h2>También puedes encontrarnos aquí</h2><p>Estos son nuestros canales oficiales.</p></div>
+<div class="contact-social-grid"><a href="https://www.instagram.com/deluxeeterno" target="_blank" rel="noopener"><i class="bi bi-instagram" aria-hidden="true"></i><span><strong>Instagram</strong><small>@deluxeeterno</small></span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a><a href="https://www.facebook.com/profile.php?id=61550209177936" target="_blank" rel="noopener"><i class="bi bi-facebook" aria-hidden="true"></i><span><strong>Facebook</strong><small>Visita nuestra página</small></span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a><a href="https://www.tiktok.com/@deluxeeterno" target="_blank" rel="noopener"><i class="bi bi-tiktok" aria-hidden="true"></i><span><strong>TikTok</strong><small>@deluxeeterno</small></span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a><a href="https://www.pinterest.com/deluxeeterno/_created/" target="_blank" rel="noopener"><i class="bi bi-pinterest" aria-hidden="true"></i><span><strong>Pinterest</strong><small>Guarda tu inspiración</small></span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></div>
+<a class="contact-all-links" href="https://linktr.ee/tiendavirtual.deluxeeterno" target="_blank" rel="noopener">Todos nuestros enlaces <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+<div class="contact-brand-note"><img th:src="@{/assets/brand/simbolo-coral.png}" alt="" width="36" height="42" aria-hidden="true"><p>Una idea, una emoción,<br><em>un detalle especial.</em></p></div></div>
+<div class="contact-form-column">
+<div id="contactConfirmation" class="alert alert-success" role="status" tabindex="-1" th:if="${successMessage}" th:text="${successMessage}">Consulta registrada.</div>
+<form class="contact-message-form" th:action="@{/contactos}" th:object="${inquiryForm}" method="post"><span class="section-kicker">TU IDEA EMPIEZA AQUÍ</span><h2>Cuéntanos qué tienes en mente</h2><p class="contact-form-intro">Completa tus datos para que podamos conocer lo que buscas.</p>
 <div th:replace="~{fragments/demo :: tools('contact')}"></div>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="name" class="form-label">Nombre <span class="text-secondary">(obligatorio)</span></label>
-                            <input type="text" id="name" class="form-control" th:field="*{name}" th:errorclass="is-invalid" th:attr="aria-invalid=${#fields.hasErrors('name')}">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</div>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="phone" class="form-label">Teléfono <span class="text-secondary">(opcional)</span></label>
-                            <input type="tel" id="phone" class="form-control" th:field="*{phone}" th:errorclass="is-invalid" th:attr="aria-invalid=${#fields.hasErrors('phone')}">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Error</div>
-                        </div>
-                        <div class="col-12">
-                            <label for="email" class="form-label">Correo <span class="text-secondary">(obligatorio)</span></label>
-                            <input type="email" id="email" class="form-control" th:field="*{email}" th:errorclass="is-invalid" th:attr="aria-invalid=${#fields.hasErrors('email')}">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</div>
-                        </div>
-                        <div class="col-12">
-                            <label for="message" class="form-label">Mensaje <span class="text-secondary">(obligatorio)</span></label>
-                            <textarea id="message" class="form-control" rows="5" th:field="*{message}" th:errorclass="is-invalid" th:attr="aria-invalid=${#fields.hasErrors('message')}"></textarea>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('message')}" th:errors="*{message}">Error</div>
-                        </div>
-                        <div class="col-12"><button class="btn btn-primary btn-lg w-100" type="submit"><i class="bi bi-send me-2"></i>Enviar consulta</button></div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</main>
+<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">Revisa los campos marcados antes de enviar tu consulta.</div>
+<div class="row g-3"><div class="col-md-6"><label for="name" class="form-label">Nombre <span>(obligatorio)</span></label><input type="text" id="name" class="form-control" th:field="*{name}" th:errorclass="is-invalid" th:attr="aria-invalid=${#fields.hasErrors('name')}" maxlength="120" autocomplete="name" placeholder="Tu nombre" required><div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div></div>
+<div class="col-md-6"><label for="phone" class="form-label">Teléfono <span>(opcional)</span></label><input type="tel" id="phone" class="form-control" th:field="*{phone}" th:errorclass="is-invalid" th:attr="aria-invalid=${#fields.hasErrors('phone')}" maxlength="40" autocomplete="tel" placeholder="Tu número de contacto"><div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div></div>
+<div class="col-12"><label for="email" class="form-label">Correo <span>(obligatorio)</span></label><input type="email" id="email" class="form-control" th:field="*{email}" th:errorclass="is-invalid" th:attr="aria-invalid=${#fields.hasErrors('email')}" maxlength="180" autocomplete="email" placeholder="nombre@correo.com" required><div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div></div>
+<div class="col-12"><label for="message" class="form-label">Mensaje <span>(obligatorio)</span></label><textarea id="message" class="form-control" rows="5" th:field="*{message}" th:errorclass="is-invalid" th:attr="aria-invalid=${#fields.hasErrors('message')}" maxlength="2000" aria-describedby="messageHint messageCount" placeholder="Cuéntanos la ocasión, el estilo o la personalización que buscas…" required></textarea><div class="invalid-feedback" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></div><div class="contact-message-help"><small id="messageHint">Puedes incluir la ocasión y tus ideas de personalización.</small><small id="messageCount">Máximo 2000 caracteres</small></div></div>
+<div class="col-12"><button class="btn btn-primary contact-send" type="submit">Enviar consulta <i class="bi bi-send" aria-hidden="true"></i></button><p class="contact-form-footnote">La composición, preparación y disponibilidad se coordinan al atender tu consulta.</p></div></div>
+</form></div></div></main>
 <footer th:replace="~{fragments/layout :: footer}"></footer>
 <script th:replace="~{fragments/layout :: scripts}"></script>
-</body>
-</html>
+<script th:src="@{/js/contact.js}"></script>
+</body></html>

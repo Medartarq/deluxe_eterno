@@ -5,6 +5,7 @@
 <main class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-7 col-lg-5">
+            <div th:replace="~{fragments/demo :: banner}"></div>
             <div class="text-center mb-4"><a th:href="@{/}"><img class="login-logo mb-4" th:src="@{/assets/brand/logo-principal.png}" alt="Deluxe Eterno" width="240" height="110"></a><h1 class="fw-bold h2">Acceso de administración</h1><p class="text-secondary">Acceso reservado para el equipo de Deluxe Eterno.</p></div>
             <div class="alert alert-danger" th:if="${param.error}">Usuario o contraseña incorrectos.</div>
             <div class="alert alert-success" th:if="${param.logout}">Sesión cerrada correctamente.</div>

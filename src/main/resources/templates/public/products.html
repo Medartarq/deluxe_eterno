@@ -1,42 +1,38 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Productos')}"></head>
-<body>
+<body class="catalog-page">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 <div th:replace="~{fragments/demo :: banner}"></div>
-<main class="py-5 bg-soft">
-    <div class="container">
-        <div class="d-flex flex-column gap-3 mb-4">
-            <div><span class="section-kicker">Productos</span><h1 class="fw-bold mb-0">Catálogo</h1></div>
-            <div class="d-flex flex-wrap gap-2" role="group" aria-label="Filtro de categorías">
-                <a class="btn btn-outline-primary" th:classappend="${selectedCategory == null} ? ' active'" th:href="@{/productos}">Todos</a>
-                <a class="btn btn-outline-primary" th:classappend="${selectedCategory != null && selectedCategory == category.id} ? ' active'" th:each="category : ${categories}" th:href="@{/productos(categoria=${category.id})}" th:text="${category.name}">Categoría</a>
+<main>
+    <header class="catalog-intro"><div class="container catalog-intro-layout"><div><span class="section-kicker">NUESTRO CATÁLOGO</span><h1>Un detalle para <em>cada ocasión.</em></h1><p>Flores, regalos y pequeños gestos para expresar lo que sientes. Encuentra el que va contigo.</p></div><a class="catalog-help" th:href="@{/contacto}"><span class="catalog-help-icon"><i class="bi bi-chat-heart" aria-hidden="true"></i></span><span><strong>¿Tienes una idea especial?</strong><small>Conversemos sobre tu detalle <i class="bi bi-arrow-up-right" aria-hidden="true"></i></small></span></a></div></header>
+    <section class="catalog-content" aria-label="Explorar productos">
+        <div class="container">
+            <div class="catalog-filter-panel">
+                <form class="catalog-search-row" role="search" data-catalog-enhanced hidden>
+                    <div class="catalog-search"><label for="catalogSearch">Encuentra tu detalle</label><div class="catalog-search-field"><i class="bi bi-search" aria-hidden="true"></i><input id="catalogSearch" type="search" name="q" maxlength="120" placeholder="Busca rosas, un personaje o una idea…" autocomplete="off" aria-controls="catalogGrid"></div></div>
+                    <div class="catalog-sort"><label for="catalogSort">Ordenar por</label><select id="catalogSort" class="form-select" aria-controls="catalogGrid"><option value="asc">Nombre: A–Z</option><option value="desc">Nombre: Z–A</option></select></div>
+                </form>
+                <nav class="catalog-categories" aria-label="Filtro de categorías">
+                    <a th:classappend="${selectedCategory == null} ? 'is-selected'" th:attr="aria-current=${selectedCategory == null} ? 'page' : null" th:href="@{/productos}">Todos los detalles</a>
+                    <a th:each="category : ${categories}" th:classappend="${selectedCategory != null && selectedCategory == category.id} ? 'is-selected'" th:attr="aria-current=${selectedCategory != null && selectedCategory == category.id} ? 'page' : null" th:href="@{/productos(categoria=${category.id})}" th:text="${category.name}"></a>
+                </nav>
             </div>
-        </div>
-        <div class="row g-4" th:if="${!products.isEmpty()}">
-            <div class="col-12 col-md-6 col-lg-4" th:each="product : ${products}">
-                <article class="card product-card h-100 border-0 shadow-sm">
-                    <div class="product-photo"><img th:src="@{${product.imagePath}}" th:style="${product.focusX != 50 || product.focusY != 50} ? 'object-position: ' + ${product.focusX} + '% ' + ${product.focusY} + '%' : null" class="card-img-top" loading="lazy" width="750" height="1000" th:alt="${product.name}" alt="Producto"></div>
-                    <div class="card-body">
-                        <span class="badge text-bg-light mb-2" th:text="${product.category.name}">Categoría</span>
-                        <h2 class="h5" th:text="${product.name}">Producto</h2>
-                        <p class="text-secondary" th:text="${product.description}">Descripción</p><p class="small mb-2"><strong th:text="${product.priceLabel}"></strong> · <span th:text="${product.availabilityLabel}"></span></p>
-                        <div class="d-grid gap-2">
-                            <a class="btn btn-primary" th:href="@{/productos/{id}(id=${product.id})}">Consultar opciones</a>
-                            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal"
-                                    th:data-bs-target="'#productModal-' + ${product.id}">
-                                <i class="bi bi-eye me-2"></i>Vista rápida
-                            </button>
-                        </div>
-                    </div>
+            <div class="catalog-results-line"><p id="catalogResultSummary" role="status" aria-live="polite" aria-atomic="true"><strong th:text="${products.size()}">0</strong> <span th:text="${products.size() == 1} ? 'detalle para descubrir' : 'detalles para descubrir'"></span></p><button class="catalog-clear" type="button" id="catalogClear" hidden>Limpiar búsqueda <i class="bi bi-x-lg" aria-hidden="true"></i></button><span class="catalog-reference">Cada detalle se puede consultar y personalizar.</span></div>
+            <div id="catalogGrid" class="catalog-grid" th:if="${!products.isEmpty()}">
+                <article class="card product-card catalog-card" th:each="product, position : ${products}" th:data-search="${product.name + ' ' + product.category.name + ' ' + product.description}" th:data-name="${product.name}">
+                    <div class="catalog-photo-wrap"><a class="product-photo" th:href="@{/productos/{id}(id=${product.id})}" th:aria-label="${'Ver detalle de ' + product.name}"><img th:src="@{${product.imagePath}}" th:style="${product.focusX != 50 || product.focusY != 50} ? 'object-position: ' + ${product.focusX} + '% ' + ${product.focusY} + '%' : null" class="card-img-top" th:attr="loading=${position.index < 6} ? 'eager' : 'lazy'" decoding="async" width="750" height="1000" th:alt="${product.name}"><span class="catalog-photo-fallback" hidden><i class="bi bi-image" aria-hidden="true"></i>Fotografía no disponible</span></a><button class="catalog-quick-view" type="button" data-bs-toggle="modal" th:data-bs-target="'#productModal-' + ${product.id}" th:aria-label="${'Vista rápida de ' + product.name}"><i class="bi bi-eye" aria-hidden="true"></i><span>Vista rápida</span></button></div>
+                    <div class="card-body"><span class="catalog-category" th:text="${product.category.name}"></span><h2><a th:href="@{/productos/{id}(id=${product.id})}" th:text="${product.name}"></a></h2><p class="catalog-description" th:text="${product.description}"></p><div class="catalog-product-meta"><strong th:text="${product.priceLabel}"></strong><span class="catalog-availability" th:classappend="${product.temporarilyUnavailable || (product.supplyMode.name() == 'STOCK' && product.availableQuantity == 0)} ? 'is-unavailable' : ''" th:text="${product.availabilityLabel}"></span></div><a class="btn btn-primary catalog-detail-link" th:href="@{/productos/{id}(id=${product.id})}">Ver detalle <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></div>
                 </article>
             </div>
             <div th:replace="~{public/product-modal :: productModals}"></div>
+            <div id="catalogNoResults" class="catalog-no-results" hidden><span><i class="bi bi-search-heart" aria-hidden="true"></i></span><h2>No encontramos ese detalle</h2><p>Prueba con otro nombre, personaje o tipo de regalo dentro de esta categoría.</p><button class="btn btn-outline-primary" type="button" id="catalogResetSearch">Mostrar los detalles de esta categoría</button><a th:href="@{/productos}">Explorar todo el catálogo</a></div>
+            <div class="empty-state" th:if="${products.isEmpty()}"><i class="bi bi-flower1" aria-hidden="true"></i><div><h2 class="h4">Busquemos un detalle para ti</h2><p>No hay opciones publicadas para esta categoría. Puedes enviarnos una consulta para conocer más alternativas.</p></div><a class="btn btn-primary" th:href="@{/contacto}">Consultar opciones <i class="bi bi-arrow-up-right ms-2"></i></a></div>
+            <div class="catalog-closing"><img th:src="@{/assets/brand/simbolo-coral.png}" alt="" width="34" height="40" aria-hidden="true"><p>El mejor detalle empieza con lo que quieres expresar.</p><a th:href="@{/contacto}">Cuéntanos tu idea <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div>
         </div>
-        <div class="empty-state" th:if="${products.isEmpty()}"><i class="bi bi-flower1" aria-hidden="true"></i><div><h2 class="h4">Busquemos un detalle para ti</h2><p>No hay opciones publicadas para esta categoría. Puedes enviarnos una consulta para conocer más alternativas.</p></div><a class="btn btn-primary" th:href="@{/contacto}">Consultar opciones <i class="bi bi-arrow-up-right ms-2"></i></a></div>
-    </div>
+    </section>
 </main>
 <footer th:replace="~{fragments/layout :: footer}"></footer>
 <script th:replace="~{fragments/layout :: scripts}"></script>
-</body>
-</html>
+<script th:src="@{/js/catalog.js}"></script>
+</body></html>

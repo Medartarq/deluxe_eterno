@@ -1,31 +1,38 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Nosotros')}"></head>
-<body>
+<body class="about-page">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 <div th:replace="~{fragments/demo :: banner}"></div>
-<main class="py-5">
-    <div class="container">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-6"><div class="about-brand-panel"><img th:src="@{/assets/brand/simbolo-coral.png}" alt="Tulipán de Deluxe Eterno" width="180" height="180"><p>Un detalle puede decir<br><em>mucho más.</em></p><span>DELUXE ETERNO · TRUJILLO</span></div></div>
-            <div class="col-lg-6">
-                <span class="section-kicker">Nosotros</span>
-                <h1 class="fw-bold mb-3">Detalles que hacen especial cada momento</h1>
-                <p>Deluxe Eterno es una tienda virtual de Trujillo, Perú, especializada en detalles personalizados, regalos y floristería.</p>
-                <p class="text-secondary">Ofrecemos opciones para expresar emociones y celebrar momentos especiales.</p>
-                <div class="accordion mt-4" id="aboutAccordion">
-                    <div class="accordion-item">
-                        <h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#vision" aria-expanded="true" aria-controls="vision">Visión</button></h3>
-                        <div id="vision" class="accordion-collapse collapse show" data-bs-parent="#aboutAccordion"><div class="accordion-body">Ser una tienda de detalles y floristería reconocida en Trujillo por la creatividad, variedad y personalización de sus productos, fortaleciendo progresivamente su presencia digital y facilitando que más clientes puedan conocer y solicitar productos para sus ocasiones especiales.</div></div>
-                    </div>
-                    <div class="accordion-item">
-                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mission" aria-expanded="false" aria-controls="mission">Misión</button></h3>
-                        <div id="mission" class="accordion-collapse collapse" data-bs-parent="#aboutAccordion"><div class="accordion-body">Crear detalles, arreglos florales y regalos personalizados que permitan a nuestros clientes expresar emociones y celebrar momentos especiales, ofreciendo productos creativos y personalizados con una atención cercana y accesible.</div></div>
-                    </div>
-                </div>
+<main>
+    <section class="about-hero" aria-labelledby="aboutTitle">
+        <div class="container about-hero-grid">
+            <div class="about-introduction">
+                <span class="section-kicker">SOMOS DELUXE ETERNO</span>
+                <h1 id="aboutTitle">Detalles que hacen especial <em>cada momento.</em></h1>
+                <p class="about-lead">Somos una tienda virtual de Trujillo, Perú, especializada en detalles personalizados, regalos y floristería.</p>
+                <p class="about-description">Ofrecemos opciones para expresar emociones y celebrar momentos especiales. Un cumpleaños, un agradecimiento o un gesto de cariño: cada ocasión puede empezar con un detalle.</p>
+                <div class="about-actions"><a class="btn btn-primary" th:href="@{/productos}">Descubre nuestros detalles <i class="bi bi-arrow-up-right ms-2" aria-hidden="true"></i></a><a class="about-text-link" th:href="@{/contacto}">Cuéntanos tu idea <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div>
+                <ul class="about-signatures" aria-label="Nuestra esencia"><li><i class="bi bi-palette" aria-hidden="true"></i> Creatividad</li><li><i class="bi bi-heart" aria-hidden="true"></i> Personalización</li><li><i class="bi bi-chat-heart" aria-hidden="true"></i> Cercanía</li></ul>
+            </div>
+            <div class="about-composition">
+                <span class="about-location"><i class="bi bi-geo-alt" aria-hidden="true"></i> Desde Trujillo, con cariño</span>
+                <figure class="about-photo-main"><img th:src="@{/assets/products/flores-y-arreglos/rosas-de-aurora.jpg}" alt="Rosas de Aurora, ramo floral de Deluxe Eterno" width="3024" height="4032" fetchpriority="high"></figure>
+                <figure class="about-photo-small"><img th:src="@{/assets/products/boxes-con-personajes/rayito-de-ternura.jpg}" alt="Rayito de Ternura, box con peluche y flores amarillas" width="3024" height="4032"><figcaption>Pequeños gestos,<br>grandes emociones.</figcaption></figure>
+                <div class="about-brand-quote"><img th:src="@{/assets/brand/simbolo-coral.png}" alt="" width="48" height="48" aria-hidden="true"><p>Un detalle puede decir <em>mucho más.</em></p></div>
             </div>
         </div>
-    </div>
+    </section>
+    <section class="about-purpose" aria-labelledby="aboutPurposeTitle">
+        <div class="container">
+            <div class="about-purpose-heading"><div><span class="section-kicker">NUESTRA ESENCIA</span><h2 id="aboutPurposeTitle">Lo que nos mueve</h2></div><p>Creatividad, personalización y una atención cercana para acompañar tus momentos especiales.</p></div>
+            <div class="about-purpose-grid">
+                <article class="about-purpose-card"><span class="about-purpose-icon"><i class="bi bi-heart" aria-hidden="true"></i></span><span class="about-purpose-label">LO QUE HACEMOS</span><h3>Nuestra misión</h3><p>Crear detalles, arreglos florales y regalos personalizados que permitan a nuestros clientes expresar emociones y celebrar momentos especiales, ofreciendo productos creativos y personalizados con una atención cercana y accesible.</p></article>
+                <article class="about-purpose-card about-vision"><span class="about-purpose-icon"><i class="bi bi-stars" aria-hidden="true"></i></span><span class="about-purpose-label">HACIA DÓNDE VAMOS</span><h3>Nuestra visión</h3><p>Ser una tienda de detalles y floristería reconocida en Trujillo por la creatividad, variedad y personalización de sus productos, fortaleciendo progresivamente su presencia digital y facilitando que más clientes puedan conocer y solicitar productos para sus ocasiones especiales.</p></article>
+            </div>
+            <div class="about-invitation"><div><span class="section-kicker">HAGAMOS ALGO ESPECIAL</span><h2>Tu próxima sorpresa empieza con una idea.</h2><p>Cuéntanos la ocasión y consulta las opciones para personalizar tu detalle.</p></div><a class="btn btn-primary" th:href="@{/contacto}">Conversemos <i class="bi bi-arrow-up-right ms-2" aria-hidden="true"></i></a></div>
+        </div>
+    </section>
 </main>
 <footer th:replace="~{fragments/layout :: footer}"></footer>
 <script th:replace="~{fragments/layout :: scripts}"></script>

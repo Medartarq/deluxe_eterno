@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@org.springframework.context.annotation.Profile("!demo")
 public class AdminUserInitializer implements CommandLineRunner {
 
     private final AdminUserRepository adminUserRepository;

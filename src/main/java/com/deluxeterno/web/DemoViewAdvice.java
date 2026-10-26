@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class DemoViewAdvice {
     public static final String SESSION_KEY = "deluxeDemoEnabled";
     private final boolean available;
+    private final boolean isolated;
 
-    public DemoViewAdvice(@Value("${app.demo.available:true}") boolean available) { this.available = available; }
+    public DemoViewAdvice(@Value("${app.demo.available:true}") boolean available, @Value("${app.demo.isolated:false}") boolean isolated) { this.available = available; this.isolated = isolated; }
+
+    @ModelAttribute("demoEnvironment")
+    public boolean isolated() { return isolated; }
 
     @ModelAttribute("demoAvailable")
     public boolean available() { return available; }

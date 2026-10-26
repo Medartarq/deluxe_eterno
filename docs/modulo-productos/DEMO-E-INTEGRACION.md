@@ -1,6 +1,8 @@
-# Modo demo e integración para la exposición
+# Autollenado e integración
 
 Fecha: 26 de octubre de 2026.
+
+Este documento describe la ayuda de autollenado. El nuevo entorno con base MySQL independiente se documenta en [ENTORNO-DEMO.md](ENTORNO-DEMO.md); activar el autollenado no cambia de base de datos.
 
 ## Activación
 

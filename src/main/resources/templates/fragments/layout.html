@@ -13,7 +13,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link th:href="@{/css/styles.css}" rel="stylesheet">
     <link th:if="${title == 'Inicio'}" th:href="@{/css/home.css}" rel="stylesheet">
-    <link th:if="${demoEnabled}" th:href="@{/css/demo.css}" rel="stylesheet">
+    <link th:if="${title == 'Nosotros'}" th:href="@{/css/about.css}" rel="stylesheet">
+    <link th:if="${title == 'Productos'}" th:href="@{/css/catalog.css}" rel="stylesheet">
+    <link th:if="${title == 'Servicios' or title == 'Galería' or title == 'Contacto'}" th:href="@{/css/editorial-pages.css}" rel="stylesheet">
+    <link th:if="${demoEnabled == true or demoEnvironment == true}" th:href="@{/css/demo.css}" rel="stylesheet">
 </head>
 <body>
 <nav th:fragment="navbar" id="mainNav" class="navbar navbar-expand-lg navbar-light sticky-top">
@@ -37,7 +40,7 @@
             </ul>
         </div>
     </div>
-    <div class="workspace-toolbar" th:if="${workspaceAccess.administrator}" aria-label="Accesos de administración">
+    <div class="workspace-toolbar" th:if="${workspaceAccess != null and workspaceAccess.administrator}" aria-label="Accesos de administración">
         <div class="container"><span class="workspace-mode"><i class="bi bi-shield-check" aria-hidden="true"></i> Vista de administrador</span><div class="workspace-actions"><a th:if="${workspaceAccess.managementUrl != null}" th:href="@{${workspaceAccess.managementUrl}}" th:text="${workspaceAccess.managementLabel}"></a><a class="workspace-panel-link" th:href="@{/admin}"><i class="bi bi-grid-1x2" aria-hidden="true"></i> Ir al panel</a></div></div>
     </div>
 </nav>
