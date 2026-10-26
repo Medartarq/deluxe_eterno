@@ -45,7 +45,9 @@ public class InventoryController {
         return "redirect:/admin/inventory/"+id;
     }
     private void populate(Model model,Long id,int page) {
-        model.addAttribute("product",catalog.findAnyProduct(id)); model.addAttribute("movements",inventory.history(id,page));
+        var product = catalog.findAnyProduct(id);
+        model.addAttribute("product",product); model.addAttribute("movements",inventory.history(id,page));
+        model.addAttribute("adminPublicUrl",product.isActive() ? "/productos/" + product.getId() : "/productos");
         model.addAttribute("movementTypes",StockMovementType.values());
     }
 }

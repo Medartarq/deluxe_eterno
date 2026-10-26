@@ -106,7 +106,9 @@ public class ProductAdminController {
     }
     private void prepare(Model model,Long id) {
         options(model); model.addAttribute("editing",id!=null); model.addAttribute("productId",id);
-        model.addAttribute("sku",id==null?"Se genera al guardar":catalog.findAnyProduct(id).getSku());
+        var product = id == null ? null : catalog.findAnyProduct(id);
+        model.addAttribute("sku",product == null ? "Se genera al guardar" : product.getSku());
+        model.addAttribute("adminPublicUrl",product != null && product.isActive() ? "/productos/" + product.getId() : "/productos");
         model.addAttribute("photoLibrary",catalog.findAllProducts().stream().filter(p -> p.getImagePath()!=null && !p.getImagePath().isBlank()).limit(100).toList());
     }
     private ProductForm toForm(Product p) {

@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Inicio')}"></head>
-<body>
+<body class="home-page">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 <div th:replace="~{fragments/demo :: banner}"></div>
 <main>
-    <header class="hero-section d-flex align-items-center">
+    <header id="inicio" class="hero-section home-section d-flex align-items-center" aria-label="Bienvenida">
         <div class="container py-5">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
@@ -32,13 +32,14 @@
                 </div>
             </div>
         </div>
+    <a class="home-scroll-cue" href="#categorias">Descubre más <i class="bi bi-arrow-down" aria-hidden="true"></i></a>
     </header>
 
-    <section class="py-5 bg-light">
+    <section id="categorias" class="home-section home-categories py-5 bg-light" aria-labelledby="homeCategoriesTitle">
         <div class="container">
             <div class="text-center mb-4">
                 <span class="section-kicker">Categorías</span>
-                <h2 class="fw-bold">Explora nuestras opciones</h2>
+                <h2 id="homeCategoriesTitle" class="fw-bold">Explora nuestras opciones</h2>
                 <p class="text-secondary mx-auto section-subtitle">Encuentra ideas para flores, regalos y celebraciones.</p>
             </div>
             <div class="row g-4">
@@ -57,10 +58,10 @@
         </div>
     </section>
 
-    <section class="py-5 bg-soft">
+    <section id="destacados" class="home-section home-products py-5 bg-soft" aria-labelledby="homeProductsTitle">
         <div class="container">
             <div class="d-flex flex-column flex-md-row align-items-md-end justify-content-between gap-3 mb-4">
-                <div><span class="section-kicker">Productos</span><h2 class="fw-bold mb-0">Productos y opciones</h2></div>
+                <div><span class="section-kicker">Productos</span><h2 id="homeProductsTitle" class="fw-bold mb-0">Encuentra tu próximo detalle</h2></div>
                 <a class="btn btn-outline-primary" th:href="@{/productos}">Ver catálogo</a>
             </div>
             <div class="row g-4" th:if="${!products.isEmpty()}">
@@ -87,11 +88,11 @@
         </div>
     </section>
 
-    <section class="py-5">
+    <section id="servicios" class="home-section home-services py-5" aria-labelledby="homeServicesTitle">
         <div class="container">
             <div class="text-center mb-5">
                 <span class="section-kicker">Servicios</span>
-                <h2 class="fw-bold">Opciones para cada celebración</h2>
+                <h2 id="homeServicesTitle" class="fw-bold">Opciones para cada celebración</h2>
             </div>
             <div class="row g-4">
                 <div class="col-md-6 col-lg-4"><div class="feature-card h-100 p-4 rounded-4"><i class="bi bi-flower1 fs-2"></i><h3 class="h5 mt-3">Flores y arreglos</h3><p class="text-secondary mb-0">Flores naturales, eternas y arreglos para ocasiones especiales.</p></div></div>
@@ -102,7 +103,14 @@
         </div>
     </section>
 </main>
+<nav class="home-section-nav" aria-label="Secciones de la página de inicio">
+    <a href="#inicio" aria-label="Ir al inicio" aria-current="location"><span>Inicio</span></a>
+    <a href="#categorias" aria-label="Ir a categorías"><span>Categorías</span></a>
+    <a href="#destacados" aria-label="Ir a productos destacados"><span>Productos</span></a>
+    <a href="#servicios" aria-label="Ir a servicios"><span>Servicios</span></a>
+</nav>
 <footer th:replace="~{fragments/layout :: footer}"></footer>
 <script th:replace="~{fragments/layout :: scripts}"></script>
+<script th:src="@{/js/home.js}"></script>
 </body>
 </html>
