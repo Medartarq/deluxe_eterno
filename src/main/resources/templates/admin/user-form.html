@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin-layout :: adminHead('Nuevo usuario')}"></head>
+<body class="admin-body">
+<nav th:replace="~{fragments/admin-layout :: adminNavbar}"></nav>
+<main class="container py-4">
+    <div th:replace="~{fragments/admin-layout :: adminFlash}"></div>
+    <div class="mb-4"><a class="btn btn-link px-0" th:href="@{/admin/users}"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Volver a usuarios</a><h1 class="fw-bold">Nuevo usuario</h1><p class="text-muted">Crea un acceso individual para otra persona de tu equipo.</p></div>
+    <form class="card border-0 shadow-sm p-4" style="max-width: 760px" th:action="@{/admin/users}" th:object="${userForm}" method="post">
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+            <p class="mb-2">Revisa los datos. Por seguridad, vuelve a introducir ambas contraseñas.</p>
+            <ul class="mb-0"><li th:each="error : ${#fields.allErrors()}" th:text="${error}"></li></ul>
+        </div>
+        <h2 class="h5">Datos de acceso</h2>
+        <p class="text-muted small">Esta cuenta tendrá permisos de administrador, incluido el acceso a Usuarios.</p>
+        <div class="mb-4">
+            <label class="form-label" for="newUsername">Nombre de usuario</label>
+            <input class="form-control" id="newUsername" th:field="*{username}" th:errorclass="is-invalid" th:attr="aria-invalid=${#fields.hasErrors('username')}" minlength="3" maxlength="80" pattern="[A-Za-z0-9._-]+" autocomplete="off" autocapitalize="none" spellcheck="false" required aria-describedby="usernameHelp">
+            <div id="usernameHelp" class="form-text">Entre 3 y 80 caracteres: letras sin tildes, números, puntos o guiones. Se guardará en minúsculas.</div>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+        </div>
+        <div class="row g-3 mb-4">
+            <div class="col-md-6"><label class="form-label" for="newPassword">Contraseña</label><input class="form-control" type="password" id="newPassword" name="password" minlength="12" maxlength="72" autocomplete="new-password" required aria-describedby="passwordHelp"></div>
+            <div class="col-md-6"><label class="form-label" for="newPasswordConfirmation">Confirmar contraseña</label><input class="form-control" type="password" id="newPasswordConfirmation" name="passwordConfirmation" minlength="12" maxlength="72" autocomplete="new-password" required></div>
+            <div id="passwordHelp" class="form-text mt-2">Usa al menos 12 caracteres. Límite de 72 bytes; los emojis y algunos caracteres ocupan más de un byte.</div>
+        </div>
+        <div class="d-flex flex-wrap gap-2"><button class="btn btn-primary" type="submit"><i class="bi bi-person-check me-2" aria-hidden="true"></i>Crear usuario</button><a class="btn btn-outline-secondary" th:href="@{/admin/users}">Cancelar</a></div>
+    </form>
+</main>
+<footer th:replace="~{fragments/admin-layout :: adminFooter}"></footer>
+<script th:replace="~{fragments/admin-layout :: adminScripts}"></script>
+</body>
+</html>

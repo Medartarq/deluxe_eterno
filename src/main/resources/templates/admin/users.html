@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin-layout :: adminHead('Usuarios')}"></head>
+<body class="admin-body">
+<nav th:replace="~{fragments/admin-layout :: adminNavbar}"></nav>
+<main class="container py-4">
+    <div th:replace="~{fragments/admin-layout :: adminFlash}"></div>
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+        <div><span class="section-kicker">EQUIPO DELUXE ETERNO</span><h1 class="fw-bold">Usuarios</h1><p class="text-muted mb-0">Una cuenta para cada persona que administra la tienda.</p></div>
+        <a class="btn btn-primary" th:href="@{/admin/users/new}"><i class="bi bi-person-plus me-2" aria-hidden="true"></i>Nuevo usuario</a>
+    </div>
+    <p class="text-muted">Los administradores pueden gestionar el catálogo, el inventario, las consultas y crear otras cuentas.</p>
+    <div class="card border-0 shadow-sm p-3 p-md-4">
+        <div class="table-responsive pb-1">
+            <table class="table align-middle mb-0">
+                <caption class="visually-hidden">Cuentas registradas y sus permisos de acceso</caption>
+                <thead><tr><th scope="col">Usuario</th><th scope="col">Permisos</th><th scope="col">Estado</th></tr></thead>
+                <tbody><tr th:each="account : ${users}">
+                    <td><strong th:text="${account.username}">admin</strong><span class="badge text-bg-light ms-2" th:if="${account.username == adminUsername}">Tu cuenta</span></td>
+                    <td th:text="${account.role.name() == 'ADMIN'} ? 'Administrador' : 'Personal sin acceso al panel'">Administrador</td>
+                    <td><span class="badge" th:classappend="${account.enabled} ? 'text-bg-success' : 'text-bg-secondary'" th:text="${account.enabled} ? 'Habilitado' : 'Deshabilitado'">Habilitado</span></td>
+                </tr></tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragments/admin-layout :: adminFooter}"></footer>
+<script th:replace="~{fragments/admin-layout :: adminScripts}"></script>
+</body>
+</html>

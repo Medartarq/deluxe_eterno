@@ -24,7 +24,7 @@ public class AdminViewAdvice {
     @ModelAttribute("adminSection")
     public String section(HttpServletRequest request) {
         String path = request.getRequestURI().substring(request.getContextPath().length());
-        for (String section : new String[]{"products", "inventory", "categories", "inquiries", "demo"}) {
+        for (String section : new String[]{"products", "inventory", "categories", "inquiries", "users", "demo"}) {
             if (path.equals("/admin/" + section) || path.startsWith("/admin/" + section + "/")) return section;
         }
         return "dashboard";

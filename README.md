@@ -110,6 +110,12 @@ Las siguientes etapas del curso pueden agregar servicios, galería, canales de c
 
 El panel ADMIN incluye editor visual, fotografías, borradores/publicación, precios y stock con movimientos auditables. Consulta [la guía del módulo](docs/modulo-productos/README.md) para uso, actualización de esquema y almacenamiento de imágenes mediante `MEDIA_DIRECTORY`. Las fotos nuevas y los registros MySQL se respaldan y comparten por separado de GitHub.
 
+## Creación de usuarios
+
+Desde **Usuarios → Nuevo usuario** (`/admin/users/new`), un administrador puede crear otras cuentas de administración. El nombre es único sin distinguir mayúsculas y se guarda en minúsculas; admite entre 3 y 80 caracteres alfanuméricos, puntos, guiones y guiones bajos. La contraseña se confirma, exige al menos 12 caracteres y respeta el límite de 72 bytes de BCrypt. Se almacena únicamente su hash y no se vuelve a mostrar en los formularios.
+
+Las nuevas cuentas tienen rol ADMIN, el único que actualmente accede al panel, y pueden gestionar catálogo, inventario, consultas y usuarios. No hay registro público. El módulo utiliza la tabla existente `admin_users`; no requiere una migración adicional. Consulta [la guía de usuarios](docs/modulo-productos/USUARIOS.md). Reinicia Spring Boot después de actualizar el código para cargar las nuevas rutas.
+
 ## Autollenado y entorno demo independiente
 
 El autollenado completa formularios de la sesión sin guardarlos automáticamente. No selecciona la base de datos.
