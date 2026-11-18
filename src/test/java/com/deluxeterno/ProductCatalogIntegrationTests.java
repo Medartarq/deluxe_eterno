@@ -58,6 +58,18 @@ class ProductCatalogIntegrationTests {
     }
 
     @Test
+    void publicCatalogPaginatesAndKeepsSearchInTheRequest() throws Exception {
+        mvc.perform(get("/productos"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Página 1 de 3")));
+
+        mvc.perform(get("/productos").param("q", "Koala"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Abrazo de Koala")))
+                .andExpect(content().string(containsString("<strong>1</strong>")));
+    }
+
+    @Test
     void galleryShowsProductsAndCollectionAndDetailKeepsSecondView() throws Exception {
         mvc.perform(get("/galeria"))
                 .andExpect(status().isOk())

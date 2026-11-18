@@ -130,7 +130,7 @@ class DeluxeEternoApplicationTests {
         Product product = productRepository.saveAndFlush(
                 new Product("Producto con modal", "Descripcion", "/assets/gallery-1.svg", category));
 
-        mockMvc.perform(get("/productos"))
+        mockMvc.perform(get("/productos").param("q", "Producto con modal"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data-bs-toggle=\"modal\"")))
                 .andExpect(content().string(containsString("productModal-" + product.getId())))

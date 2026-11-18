@@ -45,6 +45,15 @@ public class CatalogService {
                 : productRepository.findByActiveTrueAndCategory_IdOrderByNameAsc(categoryId);
     }
 
+    public Page<Product> findPublicProducts(Long categoryId, String search, String order, int page) {
+        String normalizedSearch = search == null ? "" : search.trim().toLowerCase(java.util.Locale.ROOT);
+        Sort sort = "desc".equals(order) ? Sort.by("name").descending() : Sort.by("name").ascending();
+        return productRepository.findPublicProducts(
+                normalizedSearch,
+                categoryId,
+                PageRequest.of(Math.max(0, page), 12, sort));
+    }
+
     public List<Product> findAllProducts() {
         return productRepository.findAllByOrderByNameAsc();
     }

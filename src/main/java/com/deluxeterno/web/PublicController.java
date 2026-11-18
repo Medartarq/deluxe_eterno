@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.List;
-
 @Controller
 public class PublicController {
 
@@ -46,11 +44,19 @@ public class PublicController {
     }
 
     @GetMapping("/productos")
-    public String products(@RequestParam(value = "categoria", required = false) Long categoryId, Model model) {
-        List<Category> categories = catalogService.findCategories();
-        model.addAttribute("categories", categories);
-        model.addAttribute("products", catalogService.findActiveProducts(categoryId));
+    public String products(
+            @RequestParam(value = "categoria", required = false) Long categoryId,
+            @RequestParam(value = "q", defaultValue = "") String search,
+            @RequestParam(value = "orden", defaultValue = "asc") String order,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            Model model) {
+        String normalizedSearch = search.length() > 120 ? search.substring(0, 120) : search;
+        String normalizedOrder = "desc".equals(order) ? "desc" : "asc";
+        model.addAttribute("categories", catalogService.findCategories());
+        model.addAttribute("products", catalogService.findPublicProducts(categoryId, normalizedSearch, normalizedOrder, page));
         model.addAttribute("selectedCategory", categoryId);
+        model.addAttribute("query", normalizedSearch);
+        model.addAttribute("order", normalizedOrder);
         return "public/products";
     }
 

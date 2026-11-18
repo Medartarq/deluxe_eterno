@@ -25,6 +25,20 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByActiveTrueAndCategory_IdOrderByNameAsc(Long categoryId);
 
     @EntityGraph(attributePaths = "category")
+    @Query("""
+            select p from Product p
+            where p.active = true
+              and (:search = '' or lower(p.name) like lower(concat('%', :search, '%'))
+                   or lower(p.description) like lower(concat('%', :search, '%'))
+                   or lower(p.category.name) like lower(concat('%', :search, '%')))
+              and (:categoryId is null or p.category.id = :categoryId)
+            """)
+    Page<Product> findPublicProducts(
+            @Param("search") String search,
+            @Param("categoryId") Long categoryId,
+            Pageable pageable);
+
+    @EntityGraph(attributePaths = "category")
     List<Product> findAllByOrderByNameAsc();
 
     @EntityGraph(attributePaths = "category")
