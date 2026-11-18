@@ -12,6 +12,7 @@ docs/auditoria/*
 .env
 .env.*
 !.env.example
+src/main/resources/application.yml
 .DS_Store
 __pycache__/
 .tools/
