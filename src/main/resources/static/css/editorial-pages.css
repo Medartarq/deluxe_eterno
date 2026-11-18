@@ -49,6 +49,11 @@
 .gallery-tile-caption span { display: block; color: #ae7186; font-size: .63rem; margin-bottom: 7px; }
 .gallery-tile-caption h2 { font-size: 1.05rem; font-weight: 650; margin: 0; }
 .gallery-tile-caption > i { color: #a3687e; }
+.gallery-pagination { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 32px; }
+.gallery-page-numbers { display: flex; gap: 6px; }
+.gallery-page-link { display: inline-grid; place-items: center; min-width: 34px; height: 34px; padding: 0 10px; border: 1px solid #e3d1d8; border-radius: 8px; color: #8a586a; background: #fff; font-size: .76rem; font-weight: 600; text-decoration: none; }
+.gallery-page-link:hover, .gallery-page-link.is-current { color: #fff; border-color: #a83240; background: #a83240; }
+.gallery-page-link.is-disabled { pointer-events: none; opacity: .45; }
 .gallery-page .gallery-collection { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: 44px; background: #fff0f5; border: 1px solid #ecd6df; border-radius: 22px; padding: 28px !important; margin-top: 42px; scroll-margin-top: 150px; }
 .gallery-collection-photo { border-radius: 14px; overflow: hidden; background: #f5e9ee; }
 .gallery-collection-photo img { display: block; width: 100%; max-height: 400px; object-fit: contain; }

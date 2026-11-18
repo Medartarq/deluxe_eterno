@@ -73,8 +73,11 @@ public class PublicController {
     }
 
     @GetMapping("/galeria")
-    public String gallery(@RequestParam(value = "categoria", required = false) Long categoryId, Model model) {
-        model.addAttribute("products", catalogService.findActiveProducts(categoryId));
+    public String gallery(
+            @RequestParam(value = "categoria", required = false) Long categoryId,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            Model model) {
+        model.addAttribute("products", catalogService.findPublicProducts(categoryId, "", "asc", page));
         model.addAttribute("categories", catalogService.findCategories());
         model.addAttribute("selectedCategory", categoryId);
         return "public/gallery";

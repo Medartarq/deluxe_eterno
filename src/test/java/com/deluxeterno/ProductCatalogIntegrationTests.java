@@ -74,6 +74,7 @@ class ProductCatalogIntegrationTests {
         mvc.perform(get("/galeria"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Cielo de Girasoles")))
+                .andExpect(content().string(containsString("Página 1 de 3")))
                 .andExpect(content().string(containsString("Pequeños Grandes Detalles")))
                 .andExpect(content().string(not(containsString("Galería en actualización"))));
         var route = products.findByCatalogKey("DE-016").orElseThrow();
