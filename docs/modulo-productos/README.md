@@ -28,7 +28,7 @@ Cada movimiento conserva fecha UTC, usuario autenticado, motivo, cantidad y ambo
 
 ## Persistencia y colaboración
 
-`application.yml` conserva `ddl-auto: update`: al reiniciar, Hibernate agrega columnas a `products` y crea `product_images` y `stock_movements`. Las columnas de conteo, reservas y versión tienen valor inicial cero; encuadre 50 y umbral 3. Los enums nuevos pueden ser nulos en registros antiguos: sus getters mantienen valores compatibles. No hay borrado ni recreación de tablas.
+El perfil local `dev` conserva `ddl-auto: update`: al reiniciar, Hibernate agrega columnas a `products` y crea `product_images` y `stock_movements`. En `prod`, el esquema se valida y debe aplicarse una migración antes del despliegue. Las columnas de conteo, reservas y versión tienen valor inicial cero; encuadre 50 y umbral 3. Los enums nuevos pueden ser nulos en registros antiguos: sus getters mantienen valores compatibles. No hay borrado ni recreación de tablas.
 
 Antes del primer reinicio con datos reales, realizar una copia de seguridad habitual de MySQL. La actualización sobre una copia de la base MySQL existente no se ha ejecutado en esta sesión: las verificaciones utilizan H2. Si aparecen errores DDL, detener el arranque y revisar los permisos/versión de MySQL; no cambiar a `create` o `create-drop`. Para volver a una versión anterior, restaurar conjuntamente base y archivos desde la copia.
 

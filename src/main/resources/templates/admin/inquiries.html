@@ -6,12 +6,13 @@
 <main class="container py-4">
     <div th:replace="~{fragments/admin-layout :: adminFlash}"></div>
     <div class="mb-4"><span class="section-kicker">Consultas</span><h1 class="fw-bold mb-0">Solicitudes recibidas</h1></div>
+    <form method="get" class="module-filters mb-4" th:action="@{/admin/inquiries}"><div class="filter-search"><label class="form-label" for="inquirySearch">Buscar</label><input id="inquirySearch" name="q" th:value="${q}" class="form-control" placeholder="Nombre, correo o mensaje" maxlength="120"></div><div><label class="form-label" for="inquiryStatus">Estado</label><select id="inquiryStatus" class="form-select" name="status"><option value="">Todos</option><option th:each="status : ${statuses}" th:value="${status}" th:selected="${selectedStatus == status}" th:text="${status.name() == 'NEW' ? 'Nueva' : (status.name() == 'READ' ? 'Leída' : 'Resuelta')}"></option></select></div><button class="btn btn-outline-primary" type="submit">Filtrar</button><a class="btn btn-link" th:href="@{/admin/inquiries}">Limpiar</a></form>
     <div class="card border-0 shadow-sm">
         <div class="table-responsive" th:unless="${inquiries.isEmpty()}">
             <table class="table module-table align-middle mb-0">
                 <thead><tr><th>Remitente</th><th>Contacto</th><th>Mensaje</th><th>Estado</th><th class="text-end">Actualizar</th></tr></thead>
                 <tbody>
-                <tr th:each="inquiry : ${inquiries}">
+                <tr th:each="inquiry : ${inquiries.content}">
                     <td data-label="Remitente"><strong th:text="${inquiry.name}">Nombre</strong><div class="small text-secondary" th:text="${inquiry.createdAt}">Fecha</div></td>
                     <td data-label="Contacto"><div th:text="${inquiry.email}">Correo</div><div class="small text-secondary" th:text="${inquiry.phone ?: 'Sin teléfono'}">Teléfono</div></td>
                     <td data-label="Mensaje" class="inquiry-message" th:text="${inquiry.message}">Mensaje</td>
@@ -24,6 +25,7 @@
         </div>
         <div class="admin-empty" th:if="${inquiries.isEmpty()}"><span class="admin-empty-icon"><i class="bi bi-chat-heart" aria-hidden="true"></i></span><h2>Aquí empieza una nueva sorpresa</h2><p>No hay consultas registradas. Las solicitudes que lleguen desde el formulario de contacto aparecerán aquí.</p><a class="btn btn-outline-primary" th:href="@{/contacto}">Ver formulario de contacto</a></div>
     </div>
+    <nav class="d-flex justify-content-between align-items-center mt-3" th:if="${inquiries.totalPages > 1}" aria-label="Paginación de consultas"><span class="small text-secondary" th:text="${'Página ' + (inquiries.number + 1) + ' de ' + inquiries.totalPages + ' · ' + inquiries.totalElements + ' resultados'}"></span><div class="btn-group"><a class="btn btn-outline-primary btn-sm" th:classappend="${inquiries.first} ? ' disabled'" th:href="@{/admin/inquiries(page=${inquiries.number - 1},q=${q},status=${selectedStatus})}">Anterior</a><a class="btn btn-outline-primary btn-sm" th:classappend="${inquiries.last} ? ' disabled'" th:href="@{/admin/inquiries(page=${inquiries.number + 1},q=${q},status=${selectedStatus})}">Siguiente</a></div></nav>
 </main>
 <footer th:replace="~{fragments/admin-layout :: adminFooter}"></footer>
 <script th:replace="~{fragments/admin-layout :: adminScripts}"></script>

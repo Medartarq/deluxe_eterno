@@ -19,11 +19,10 @@ public class InventoryController {
     public InventoryController(CatalogService catalog,InventoryService inventory) { this.catalog=catalog; this.inventory=inventory; }
 
     @GetMapping
-    public String list(@RequestParam(defaultValue="") String q,@RequestParam(defaultValue="false") boolean low,Model model) {
+    public String list(@RequestParam(defaultValue="") String q,@RequestParam(defaultValue="false") boolean low,
+            @RequestParam(defaultValue="0") int page,Model model) {
         String search=q.trim().toLowerCase(Locale.ROOT);
-        model.addAttribute("products",catalog.findAllProducts().stream()
-                .filter(p -> search.isBlank() || (p.getName()+" "+p.getSku()).toLowerCase(Locale.ROOT).contains(search))
-                .filter(p -> !low || p.isLowStock()).toList());
+        model.addAttribute("products",catalog.findInventoryProducts(search,low,page));
         model.addAttribute("q",q); model.addAttribute("low",low); return "admin/inventory";
     }
 

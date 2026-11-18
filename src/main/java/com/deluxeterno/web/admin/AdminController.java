@@ -121,8 +121,12 @@ public class AdminController {
     }
 
     @GetMapping("/inquiries")
-    public String inquiries(Model model) {
-        model.addAttribute("inquiries", inquiryService.findAll());
+    public String inquiries(@RequestParam(defaultValue = "") String q, @RequestParam(required = false) InquiryStatus status,
+            @RequestParam(defaultValue = "0") int page, Model model) {
+        model.addAttribute("inquiries", inquiryService.findPage(q.trim().toLowerCase(java.util.Locale.ROOT), status, page));
+        model.addAttribute("q", q);
+        model.addAttribute("selectedStatus", status);
+        model.addAttribute("statuses", InquiryStatus.values());
         return "admin/inquiries";
     }
 

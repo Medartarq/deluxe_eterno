@@ -28,7 +28,9 @@ src/main/java/com/deluxeterno/
 src/main/resources/
 ├── templates/    Vistas Thymeleaf
 ├── static/       CSS, JavaScript y assets
-└── application.yml
+├── application.yml.example   Configuración base sin secretos
+├── application-dev.yml       Valores de desarrollo
+└── application-prod.yml      Valores seguros para producción
 ```
 
 ## Requisitos
@@ -41,7 +43,7 @@ El proyecto de pruebas usa H2 en memoria mediante el perfil `test`; no requiere 
 
 ## Configuración local
 
-Crear la base de datos MySQL `deluxe_eterno` y configurar las variables antes de iniciar:
+Crear la base de datos MySQL `deluxe_eterno`. Luego copiar `src/main/resources/application.yml.example` como `application.yml` (este archivo está ignorado por Git) y configurar las variables antes de iniciar:
 
 ```powershell
 $env:DB_URL="jdbc:mysql://localhost:3306/deluxe_eterno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true"
@@ -53,6 +55,8 @@ mvn spring-boot:run
 ```
 
 La contraseña administrativa no se guarda en el repositorio. El usuario inicial solo se crea si `ADMIN_PASSWORD` está definida y la tabla de usuarios está vacía.
+
+El perfil predeterminado es `dev`: Hibernate puede actualizar el esquema y Thymeleaf no usa caché. Para producción, establecer `SPRING_PROFILES_ACTIVE=prod`; el esquema se valida (`ddl-auto=validate`) y las plantillas usan caché. Las migraciones de base de datos deben aplicarse antes del despliegue.
 
 ## Comandos
 

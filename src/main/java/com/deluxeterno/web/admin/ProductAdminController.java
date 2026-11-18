@@ -23,16 +23,13 @@ public class ProductAdminController {
     @GetMapping
     public String list(@RequestParam(defaultValue="") String q,
             @RequestParam(required=false) Long categoryId, @RequestParam(required=false) PublicationStatus status,
-            @RequestParam(required=false) SupplyMode mode, Model model) {
-        var all=catalog.findAllProducts();
+            @RequestParam(required=false) SupplyMode mode, @RequestParam(defaultValue="0") int page, Model model) {
         String search=q.trim().toLowerCase(Locale.ROOT);
-        model.addAttribute("products",all.stream().filter(p -> search.isBlank() || (p.getName()+" "+p.getSku()).toLowerCase(Locale.ROOT).contains(search))
-                .filter(p -> categoryId==null || p.getCategory().getId().equals(categoryId))
-                .filter(p -> status==null || p.getPublicationStatus()==status).filter(p -> mode==null || p.getSupplyMode()==mode).toList());
-        model.addAttribute("total",all.size());
-        model.addAttribute("published",all.stream().filter(Product::isActive).count());
-        model.addAttribute("drafts",all.stream().filter(p -> p.getPublicationStatus()==PublicationStatus.DRAFT).count());
-        model.addAttribute("lowStock",all.stream().filter(Product::isLowStock).count());
+        model.addAttribute("products",catalog.findAdminProducts(search,categoryId,status,mode,page));
+        model.addAttribute("total",catalog.countProducts());
+        model.addAttribute("published",catalog.countPublished());
+        model.addAttribute("drafts",catalog.countDrafts());
+        model.addAttribute("lowStock",catalog.countLowStock());
         model.addAttribute("q",q); model.addAttribute("selectedCategory",categoryId); model.addAttribute("selectedStatus",status); model.addAttribute("selectedMode",mode);
         options(model);
         return "admin/products";

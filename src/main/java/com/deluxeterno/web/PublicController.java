@@ -5,6 +5,7 @@ import com.deluxeterno.domain.Product;
 import com.deluxeterno.dto.InquiryForm;
 import com.deluxeterno.service.CatalogService;
 import com.deluxeterno.service.InquiryService;
+import com.deluxeterno.service.InquiryRateLimiter;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
@@ -23,10 +25,12 @@ public class PublicController {
 
     private final CatalogService catalogService;
     private final InquiryService inquiryService;
+    private final InquiryRateLimiter inquiryRateLimiter;
 
-    public PublicController(CatalogService catalogService, InquiryService inquiryService) {
+    public PublicController(CatalogService catalogService, InquiryService inquiryService, InquiryRateLimiter inquiryRateLimiter) {
         this.catalogService = catalogService;
         this.inquiryService = inquiryService;
+        this.inquiryRateLimiter = inquiryRateLimiter;
     }
 
     @GetMapping("/")
@@ -87,8 +91,16 @@ public class PublicController {
     public String submitInquiry(
             @Valid @ModelAttribute("inquiryForm") InquiryForm inquiryForm,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request) {
+        if (inquiryForm.getWebsite() != null && !inquiryForm.getWebsite().isBlank()) {
+            bindingResult.reject("inquiry.unavailable", "No pudimos registrar tu consulta. Inténtalo nuevamente más tarde.");
+        }
         if (bindingResult.hasErrors()) {
+            return "public/contact";
+        }
+        if (!inquiryRateLimiter.tryAcquire(request.getRemoteAddr())) {
+            bindingResult.reject("inquiry.unavailable", "No pudimos registrar tu consulta. Inténtalo nuevamente más tarde.");
             return "public/contact";
         }
         inquiryService.create(inquiryForm);

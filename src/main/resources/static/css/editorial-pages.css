@@ -80,6 +80,7 @@
 .contact-brand-note p { margin: 0; font-family: Georgia,serif; color: #765362; font-size: 1.25rem; line-height: 1.4; }
 .contact-brand-note em { color: #a83240; }
 .contact-message-form { padding: 32px; background: #fff; border: 1px solid #eadbe2; border-radius: 19px; box-shadow: 0 14px 42px #76465c09; }
+.contact-honeypot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .contact-message-form h2 { font-size: 1.45rem; font-weight: 660; margin: 5px 0 12px; }
 .contact-form-intro { color: #947988; font-size: .82rem; margin-bottom: 26px; }
 .contact-message-form .form-label { font-size: .78rem; }

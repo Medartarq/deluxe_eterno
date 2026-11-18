@@ -1,0 +1,9 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:update}
+  thymeleaf:
+    cache: false

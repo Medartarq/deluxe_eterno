@@ -15,6 +15,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import java.util.List;
 import java.util.UUID;
 import com.deluxeterno.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 @Service
 @Transactional(readOnly = true)
@@ -46,11 +49,30 @@ public class CatalogService {
         return productRepository.findAllByOrderByNameAsc();
     }
 
+    public Page<Product> findAdminProducts(String search, Long categoryId, PublicationStatus status, SupplyMode mode, int page) {
+        return productRepository.findAdminProducts(
+                search,
+                categoryId,
+                status,
+                mode,
+                PageRequest.of(Math.max(0, page), 15, Sort.by("name").ascending()));
+    }
+
+    public Page<Product> findInventoryProducts(String search, boolean lowOnly, int page) {
+        return productRepository.findInventoryProducts(
+                search,
+                lowOnly,
+                SupplyMode.STOCK,
+                PageRequest.of(Math.max(0, page), 15, Sort.by("name").ascending()));
+    }
+
     public List<Product> findFeaturedProducts() {
         return productRepository.findTop3ByActiveTrueOrderByNameAsc();
     }
 
     public long countDrafts() { return productRepository.countByPublicationStatus(PublicationStatus.DRAFT); }
+
+    public long countPublished() { return productRepository.countByActiveTrue(); }
 
     public long countLowStock() { return productRepository.countLowStock(SupplyMode.STOCK); }
 

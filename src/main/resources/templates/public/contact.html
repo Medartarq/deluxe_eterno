@@ -13,6 +13,7 @@
 <div class="contact-form-column">
 <div id="contactConfirmation" class="alert alert-success" role="status" tabindex="-1" th:if="${successMessage}" th:text="${successMessage}">Consulta registrada.</div>
 <form class="contact-message-form" th:action="@{/contactos}" th:object="${inquiryForm}" method="post"><span class="section-kicker">TU IDEA EMPIEZA AQUÍ</span><h2>Cuéntanos qué tienes en mente</h2><p class="contact-form-intro">Completa tus datos para que podamos conocer lo que buscas.</p>
+<div class="contact-honeypot" aria-hidden="true"><label for="website">Sitio web</label><input id="website" type="text" th:field="*{website}" tabindex="-1" autocomplete="off"></div>
 <div th:replace="~{fragments/demo :: tools('contact')}"></div>
 <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">Revisa los campos marcados antes de enviar tu consulta.</div>
 <div class="row g-3"><div class="col-md-6"><label for="name" class="form-label">Nombre <span>(obligatorio)</span></label><input type="text" id="name" class="form-control" th:field="*{name}" th:errorclass="is-invalid" th:attr="aria-invalid=${#fields.hasErrors('name')}" maxlength="120" autocomplete="name" placeholder="Tu nombre" required><div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div></div>

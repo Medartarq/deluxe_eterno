@@ -22,6 +22,8 @@ public class InquiryForm {
     @Size(max = 2000, message = "El mensaje no debe superar 2000 caracteres.")
     private String message;
 
+    private String website;
+
     public String getName() {
         return name;
     }
@@ -52,5 +54,13 @@ public class InquiryForm {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 }

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -32,6 +35,13 @@ public class InquiryService {
 
     public List<Inquiry> findAll() {
         return inquiryRepository.findAllByOrderByCreatedAtDesc();
+    }
+
+    public Page<Inquiry> findPage(String search, InquiryStatus status, int page) {
+        return inquiryRepository.findAdminInquiries(
+                search,
+                status,
+                PageRequest.of(Math.max(0, page), 20, Sort.by("createdAt").descending()));
     }
 
     public long countNew() {
