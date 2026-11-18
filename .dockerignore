@@ -1,0 +1,9 @@
+.git/
+.idea/
+.vscode/
+target/
+uploads/
+uploads-demo/
+.env
+.env.*
+src/main/resources/application.yml

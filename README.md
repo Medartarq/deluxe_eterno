@@ -10,7 +10,7 @@ Aplicación web full-stack para el proyecto académico Deluxe Eterno. Esta carpe
 - Spring Web MVC
 - Thymeleaf
 - Spring Data JPA/Hibernate
-- MySQL
+- PostgreSQL
 - Spring Security con autenticación por sesión y BCrypt
 - Bootstrap 5 y Bootstrap Icons mediante CDN
 
@@ -37,17 +37,17 @@ src/main/resources/
 
 - JDK 26
 - Maven 3.6.3 o superior
-- MySQL 8 o superior para ejecutar la aplicación
+- PostgreSQL 16 o superior para ejecutar la aplicación
 
 El proyecto de pruebas usa H2 en memoria mediante el perfil `test`; no requiere MySQL para ejecutar `mvn test`.
 
 ## Configuración local
 
-Crear la base de datos MySQL `deluxe_eterno`. Luego copiar `src/main/resources/application.yml.example` como `application.yml` (este archivo está ignorado por Git) y configurar las variables antes de iniciar:
+Crear la base de datos PostgreSQL `deluxe_eterno`. Luego copiar `src/main/resources/application.yml.example` como `application.yml` (este archivo está ignorado por Git) y configurar las variables antes de iniciar:
 
 ```powershell
-$env:DB_URL="jdbc:mysql://localhost:3306/deluxe_eterno?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true"
-$env:DB_USERNAME="root"
+$env:DB_URL="jdbc:postgresql://localhost:5432/deluxe_eterno"
+$env:DB_USERNAME="postgres"
 $env:DB_PASSWORD="tu_password"
 $env:ADMIN_USERNAME="admin"
 $env:ADMIN_PASSWORD="una_password_local"
@@ -57,6 +57,35 @@ mvn spring-boot:run
 La contraseña administrativa no se guarda en el repositorio. El usuario inicial solo se crea si `ADMIN_PASSWORD` está definida y la tabla de usuarios está vacía.
 
 El perfil predeterminado es `dev`: Hibernate puede actualizar el esquema y Thymeleaf no usa caché. Para producción, establecer `SPRING_PROFILES_ACTIVE=prod`; el esquema se valida (`ddl-auto=validate`) y las plantillas usan caché. Las migraciones de base de datos deben aplicarse antes del despliegue.
+
+### Migrar desde MySQL
+
+La utilidad `scripts/migrate_mysql_to_postgresql.py` crea una base PostgreSQL nueva y copia las tablas de Deluxe Eterno sin modificar MySQL. Requiere Python 3.12 o superior y los conectores:
+
+```powershell
+python -m pip install mysql-connector-python "psycopg[binary]"
+$env:MYSQL_PASSWORD="contraseña_mysql"
+$env:POSTGRES_PASSWORD="contraseña_postgresql"
+python scripts/migrate_mysql_to_postgresql.py
+```
+
+El script se detiene si la base PostgreSQL destino ya existe, para evitar sobrescribir información. Antes de migrar, crea un respaldo de MySQL y detén la aplicación para preservar la consistencia.
+
+Para una base vacía de Render, usar la **External Database URL** solo de forma temporal en la terminal local:
+
+```powershell
+$env:MYSQL_PASSWORD="contraseña_mysql"
+$env:POSTGRES_URL="postgresql://usuario:contraseña@host/base?sslmode=require"
+python scripts/migrate_mysql_to_postgresql.py
+```
+
+No guardes esa URL en archivos versionados.
+
+## Despliegue en Render
+
+El `Dockerfile` compila la aplicación con Java 26 y el perfil `prod` aplica la migración Flyway `V1` en una base PostgreSQL vacía. En Render, crea un **Web Service** en la misma región que PostgreSQL, selecciona el entorno Docker y configura `SPRING_PROFILES_ACTIVE=prod`, `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, `ADMIN_USERNAME` y `ADMIN_PASSWORD`. La URL JDBC debe usar el formato `jdbc:postgresql://host:5432/base`.
+
+Render Free no conserva `uploads/`; las fotografías cargadas desde el panel deben almacenarse fuera de la instancia o se perderán al reiniciar o suspender el servicio.
 
 ## Comandos
 
