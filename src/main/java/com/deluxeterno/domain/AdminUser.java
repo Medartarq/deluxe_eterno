@@ -51,6 +51,11 @@ public class AdminUser {
         return password;
     }
 
+    public void resetPassword(String password) {
+        this.password = password;
+        this.enabled = true;
+    }
+
     public Role getRole() {
         return role;
     }

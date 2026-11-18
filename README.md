@@ -56,6 +56,8 @@ mvn spring-boot:run
 
 La contraseña administrativa no se guarda en el repositorio. El usuario inicial solo se crea si `ADMIN_PASSWORD` está definida y la tabla de usuarios está vacía.
 
+Si se pierde el acceso administrativo, establecer temporalmente `ADMIN_PASSWORD_RESET=true` junto con `ADMIN_USERNAME` y `ADMIN_PASSWORD` para crear o restablecer esa cuenta. Tras un arranque correcto, retirar o cambiar `ADMIN_PASSWORD_RESET` a `false`; de otro modo, la contraseña se restablecerá en cada reinicio.
+
 El perfil predeterminado es `dev`: Hibernate puede actualizar el esquema y Thymeleaf no usa caché. Para producción, establecer `SPRING_PROFILES_ACTIVE=prod`; el esquema se valida (`ddl-auto=validate`) y las plantillas usan caché. Las migraciones de base de datos deben aplicarse antes del despliegue.
 
 ### Migrar desde MySQL
@@ -84,6 +86,8 @@ No guardes esa URL en archivos versionados.
 ## Despliegue en Render
 
 El `Dockerfile` compila la aplicación con Java 26 y el perfil `prod` aplica la migración Flyway `V1` en una base PostgreSQL vacía. En Render, crea un **Web Service** en la misma región que PostgreSQL, selecciona el entorno Docker y configura `SPRING_PROFILES_ACTIVE=prod`, `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, `ADMIN_USERNAME` y `ADMIN_PASSWORD`. La URL JDBC debe usar el formato `jdbc:postgresql://host:5432/base`.
+
+Para restablecer una cuenta administrativa migrada, agregar temporalmente `ADMIN_PASSWORD_RESET=true`, desplegar una vez e inmediatamente cambiarla a `false`. El perfil `prod` también admite las variables estándar `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME` y `SPRING_DATASOURCE_PASSWORD`.
 
 Render Free no conserva `uploads/`; las fotografías cargadas desde el panel deben almacenarse fuera de la instancia o se perderán al reiniciar o suspender el servicio.
 
