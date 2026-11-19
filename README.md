@@ -91,6 +91,10 @@ Para restablecer una cuenta administrativa migrada, agregar temporalmente `ADMIN
 
 Render Free no conserva `uploads/`; las fotografías cargadas desde el panel deben almacenarse fuera de la instancia o se perderán al reiniciar o suspender el servicio.
 
+### Imágenes en Cloudinary
+
+En el perfil `prod`, las fotografías cargadas desde el panel se optimizan y se envían a Cloudinary. Configura en Render `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY` y `CLOUDINARY_API_SECRET`; no las guardes en Git. La aplicación persiste la URL HTTPS devuelta por Cloudinary. Las imágenes originales incluidas en `/assets/...` siguen sirviéndose desde el paquete de la aplicación.
+
 ## Comandos
 
 Para colaborar mediante GitHub, consultar [CONTRIBUTING.md](CONTRIBUTING.md). El workflow de verificación usa H2 para pruebas y no necesita credenciales de MySQL.

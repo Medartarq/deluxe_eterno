@@ -1,7 +1,10 @@
 package com.deluxeterno.service;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.PathResource;
@@ -11,13 +14,21 @@ import javax.imageio.ImageIO;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.nio.file.*;
 import java.util.UUID;
 
 @Service
 public class MediaStorageService {
     private final Path root;
-    public MediaStorageService(@Value("${app.media.directory:./uploads}") String directory) { root=Path.of(directory).toAbsolutePath().normalize(); }
+    private final Cloudinary cloudinary;
+
+    public MediaStorageService(
+            @Value("${app.media.directory:./uploads}") String directory,
+            ObjectProvider<Cloudinary> cloudinaryProvider) {
+        root = Path.of(directory).toAbsolutePath().normalize();
+        cloudinary = cloudinaryProvider.getIfAvailable();
+    }
 
     public String store(MultipartFile file) {
         if (file.isEmpty() || file.getSize()>5L*1024*1024) throw new IllegalArgumentException("Selecciona una fotografía JPG o PNG de hasta 5 MB.");
@@ -38,10 +49,24 @@ public class MediaStorageService {
                 var graphics=image.createGraphics();
                 try { graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BICUBIC); graphics.drawImage(original,0,0,image.getWidth(),image.getHeight(),null); }
                 finally { graphics.dispose(); }
+                // Re-encoding discards supplied metadata and content beyond the decoded image.
+                if (cloudinary != null) {
+                    try (var output = new ByteArrayOutputStream()) {
+                        if (!ImageIO.write(image, png ? "png" : "jpeg", output)) throw new IOException("Formato no disponible");
+                        var result = cloudinary.uploader().upload(output.toByteArray(), ObjectUtils.asMap(
+                                "resource_type", "image",
+                                "folder", "deluxe-eterno/products",
+                                "format", png ? "png" : "jpg",
+                                "use_filename", false,
+                                "unique_filename", true));
+                        Object secureUrl = result.get("secure_url");
+                        if (!(secureUrl instanceof String url) || url.isBlank()) throw new IOException("Cloudinary no devolvió una URL segura");
+                        return url;
+                    }
+                }
                 Files.createDirectories(root);
                 String filename=UUID.randomUUID()+(png?".png":".jpg");
                 Path target=root.resolve(filename);
-                // Re-encoding discards supplied metadata and content beyond the decoded image.
                 if (!ImageIO.write(image,png?"png":"jpeg",target.toFile())) throw new IOException("Formato no disponible");
                 return "/media/"+filename;
             } finally { reader.dispose(); }
